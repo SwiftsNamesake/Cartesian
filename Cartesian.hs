@@ -6,7 +6,7 @@
 -- January 27 2015
 --
 
--- TODO | -
+-- TODO | - Haddock header, sections, full coverage
 --        -
 
 -- SPEC | -
@@ -33,24 +33,39 @@ vector = Vector -- SublimeHaskell prefers the eta-reduces version (point-free)
 ---------------------------------------------------------------------------------------------------
 -- Instances
 ---------------------------------------------------------------------------------------------------
-instance Num a => Num (Vector a) where
-	(Vector x y z) + (Vector x' y' z') = Vector (x+x') (y+y') (z+z')
+instance Floating a => Num (Vector a) where
+	-- TODO: Helper method to reduce boilerplate for component-wise operations
+	(+) = dotWise (+)
+	(-) = dotWise (-)
+	(*) = dotWise (*)
+	fromInteger n = Vector (fromInteger n) 0 0
+	signum = id -- TODO: Proper way of implementing this function for vectors
+	-- abs a = Vector (euclidean a) 0 0
 
 
 
 ---------------------------------------------------------------------------------------------------
 -- Functions
 ---------------------------------------------------------------------------------------------------
+-- | Performs component-wise operations
+dotWise :: (a -> b -> c) -> Vector a -> Vector b -> Vector c
+dotWise f (Vector x y z) (Vector x' y' z') = Vector (f x x') (f y y') (f z z')
+
+
 -- | Dot product of two vectors
-dot :: Num a => Vector a -> Vector a -> a
-dot (Vector x y z) (Vector x' y' z') = let dx = x' - x
-                                                 dy = y' - y
-                                                 dz = z' - z
-                                             in sqrt $ dx**2 + dy**2 + dz**2
+dot :: Floating a => Vector a -> Vector a -> a
+dot (Vector x y z) (Vector x' y' z') = (x * x') + (y * y') + (z * z') -- TODO: Refactor with Num instance (?)
+
 
 -- | Euclidean distance between two points
-euclidean :: Num a => Vector a -> Vector a -> a
+euclidean :: Floating a => Vector a -> Vector a -> a
 euclidean a b = sqrt $ dot a b
+
+
+-- | Intersect
+-- TODO: Math notes, MathJax or LaTex
+intersect :: Num a => Line a -> Line a => Maybe (Vector a) 
+intersect _ _ = Nothing
 
 
 

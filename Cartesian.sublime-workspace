@@ -520,6 +520,14 @@
 	"buffers":
 	[
 		{
+			"file": "Cartesian.hs",
+			"settings":
+			{
+				"buffer_size": 2460,
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "README.md",
 			"settings":
 			{
@@ -536,16 +544,44 @@
 		"selected_items":
 		[
 			[
-				"save",
-				"Project: Save As"
-			],
-			[
 				"co",
 				"Git: Commit"
 			],
 			[
 				"ad",
 				"Git: Add..."
+			],
+			[
+				"upda",
+				"Git: Update Project Ignored Files"
+			],
+			[
+				"bui",
+				"SublimeHaskell: Build"
+			],
+			[
+				"git list",
+				"Git: Diff All Files (Ignore Whitespace)"
+			],
+			[
+				"update",
+				"Git: Update Project Ignored Files"
+			],
+			[
+				"comm",
+				"Git: Commit"
+			],
+			[
+				"git ad",
+				"Git: Add..."
+			],
+			[
+				"git in",
+				"Git: Init"
+			],
+			[
+				"save",
+				"Project: Save As"
 			],
 			[
 				"close",
@@ -714,10 +750,6 @@
 			[
 				"proj",
 				"Project: Close"
-			],
-			[
-				"comm",
-				"Git: Commit"
 			],
 			[
 				"Diff",
@@ -1022,30 +1054,6 @@
 			[
 				"key bi",
 				"Preferences: Key Bindings - User"
-			],
-			[
-				"haskell",
-				"Set Syntax: Haskell"
-			],
-			[
-				"c",
-				"Set Syntax: C"
-			],
-			[
-				"json",
-				"Set Syntax: JSON"
-			],
-			[
-				"JSON",
-				"Set Syntax: JSON"
-			],
-			[
-				"ftp",
-				"FTPSync: Setup FTPSync in this folder"
-			],
-			[
-				"javasc",
-				"Set Syntax: JavaScript"
 			]
 		],
 		"width": 512.0
@@ -1101,6 +1109,7 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Jonatan/Desktop/Haskell/modules/Cartesian/.gitignore",
 		"/C/Users/Jonatan/Desktop/Haskell/projects/Chess/ElegantChess.cabal",
 		"/C/Users/Jonatan/Desktop/Python/experiments/WaveFront/data/villa.obj",
 		"/C/Users/Jonatan/Dropbox/Jon & Jay/Blender/Queen.obj",
@@ -1227,8 +1236,7 @@
 		"/C/Users/Jonatan/Desktop/Python/projects/Newtonian/ed4a00de-9aba-4429-a228-78821bf9e32a.dmp",
 		"/C/Users/Jonatan/Desktop/Python/projects/Newtonian/.git/config",
 		"/C/Users/Jonatan/Desktop/Hemsida/index.html",
-		"/C/Users/Jonatan/Desktop/WebGL/First Person/FirstPerson.js",
-		"/C/Users/Jonatan/Desktop/WebGL/First Person/MatrixMath.js"
+		"/C/Users/Jonatan/Desktop/WebGL/First Person/FirstPerson.js"
 	],
 	"find":
 	{
@@ -1247,6 +1255,14 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"x",
+			"z",
+			"x",
+			"euclidean",
+			"y",
+			"x",
+			" x y z",
+			"Double",
 			"Normal",
 			"attr.",
 			"pygame.mouse.get_pressed()[0]",
@@ -1366,15 +1382,7 @@
 			"f ([0-9]+/[0-9]+/[0-9]){3,7}",
 			"f ([0-9]+/[0-9]+/[0-9]){3,4}",
 			"f ([0-9]+/[0-9]+/[0-9]){3:4}",
-			"f ([0-9]+/[0-9]+/[0-9]){3-4}",
-			"[0-9]+/[0-9]+/[0-9]+/",
-			"[0-9]+/[0-9]+/[0-9]+",
-			"[0-9]+/[0-9]+/[0-9]",
-			"usemtl",
-			"g ",
-			"g Mesh1",
-			"button.p",
-			"widget"
+			"f ([0-9]+/[0-9]+/[0-9]){3-4}"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1417,6 +1425,34 @@
 			[
 				{
 					"buffer": 0,
+					"file": "Cartesian.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2460,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								216,
+								216
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Haskell/Haskell.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
 					"file": "README.md",
 					"semi_transient": false,
 					"settings":
@@ -1429,7 +1465,7 @@
 						[
 							[
 								94,
-								94
+								21
 							]
 						],
 						"settings":
@@ -1438,10 +1474,10 @@
 							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 2.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]

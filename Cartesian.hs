@@ -26,7 +26,7 @@ data Line num = Line (Vector num) (Vector num)
 
 
 vector :: Num a => a -> a -> a -> Vector a
-vector = Vector -- SublimeHaskell prefers the eta-reduces version (point-free)
+vector = Vector -- SublimeHaskell prefers the eta-reduced version (point-free)
 
 
 
@@ -64,6 +64,7 @@ euclidean a b = sqrt $ dot a b
 
 -- | Intersect
 -- TODO: Math notes, MathJax or LaTex
+-- TODO: Intersect for curves and single points (?)
 intersect :: Num a => Line a -> Line a => Maybe (Vector a) 
 intersect _ _ = Nothing
 

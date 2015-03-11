@@ -526,15 +526,6 @@
 				"buffer_size": 2460,
 				"line_ending": "Windows"
 			}
-		},
-		{
-			"file": "README.md",
-			"settings":
-			{
-				"buffer_size": 94,
-				"line_ending": "Windows",
-				"name": "Cartesian"
-			}
 		}
 	],
 	"build_system": "",
@@ -543,6 +534,10 @@
 		"height": 392.0,
 		"selected_items":
 		[
+			[
+				"close",
+				"Project: Close"
+			],
 			[
 				"co",
 				"Git: Commit"
@@ -582,10 +577,6 @@
 			[
 				"save",
 				"Project: Save As"
-			],
-			[
-				"close",
-				"Project: Close"
 			],
 			[
 				"o",
@@ -1056,7 +1047,7 @@
 				"Preferences: Key Bindings - User"
 			]
 		],
-		"width": 512.0
+		"width": 464.0
 	},
 	"console":
 	{
@@ -1109,6 +1100,7 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Jonatan/Desktop/Haskell/modules/Cartesian/README.md",
 		"/C/Users/Jonatan/Desktop/Haskell/modules/Cartesian/.gitignore",
 		"/C/Users/Jonatan/Desktop/Haskell/projects/Chess/ElegantChess.cabal",
 		"/C/Users/Jonatan/Desktop/Python/experiments/WaveFront/data/villa.obj",
@@ -1235,8 +1227,7 @@
 		"/C/Users/Jonatan/Desktop/Python/projects/Hangman/data/settings/README.md",
 		"/C/Users/Jonatan/Desktop/Python/projects/Newtonian/ed4a00de-9aba-4429-a228-78821bf9e32a.dmp",
 		"/C/Users/Jonatan/Desktop/Python/projects/Newtonian/.git/config",
-		"/C/Users/Jonatan/Desktop/Hemsida/index.html",
-		"/C/Users/Jonatan/Desktop/WebGL/First Person/FirstPerson.js"
+		"/C/Users/Jonatan/Desktop/Hemsida/index.html"
 	],
 	"find":
 	{
@@ -1442,42 +1433,13 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/Haskell/Haskell.tmLanguage"
+							"syntax": "Packages/SublimeHaskell/Syntaxes/Haskell-SublimeHaskell.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 105.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "README.md",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 94,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								94,
-								21
-							]
-						],
-						"settings":
-						{
-							"auto_name": "Cartesian",
-							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
 					"type": "text"
 				}
 			]

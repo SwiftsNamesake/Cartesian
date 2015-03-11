@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Cartesian
--- Copyright   :  (C) 2015 Edward Kmett, Niklas Haas
+-- Copyright   :  (C) 2015 Jonatan H Sundqvist
 -- License     :  MIT-style (see the file LICENSE)
 -- Maintainer  :  Jonatan H Sundqvist <jonatanhsundqvist@gmail.com>
 -- Stability   :  provisional

@@ -31,6 +31,14 @@ module Cartesian where
 
 
 ---------------------------------------------------------------------------------------------------
+-- We'll need these
+---------------------------------------------------------------------------------------------------
+import Data.List (sort, minimumBy)
+import Data.Ord (comparing)
+
+
+
+---------------------------------------------------------------------------------------------------
 -- Types
 ---------------------------------------------------------------------------------------------------
 data Vector num = Vector num num num -- TODO: Constraints on argument types (cf. GADT) (?)
@@ -78,8 +86,24 @@ euclidean a b = sqrt $ dot a b
 -- | Intersect
 -- TODO: Math notes, MathJax or LaTex
 -- TODO: Intersect for curves and single points (?)
+-- TODO: Polymorphic, typeclass (lines, shapes, ranges, etc.) (?)
 intersect :: Num a => Line a -> Line a => Maybe (Vector a) 
 intersect _ _ = Nothing
+
+
+-- | Yields the overlap of two closed intervals (n ∈ R)
+-- TODO: Normalise intervals (eg. (12, 5) -> (5, 12))
+overlap :: Real a => (a, a) -> (a, a) -> Maybe (a, a)
+overlap a b
+	| leftmost /= (α, β) = Just $ (β, γ) --
+	| otherwise                                  = Nothing --
+	where [α, β, γ, _] = sort [fst a, snd a, fst b, snd b] -- That's right.
+	      leftmost     = minimumBy (comparing fst) [a, b]  --
+
+
+-- |
+-- TODO: Intersect Rectangles
+
 
 
 -- | Coefficients for the linear function of a Line (slope, intercept). The Z-component is ignored.

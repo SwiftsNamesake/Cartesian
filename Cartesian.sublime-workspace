@@ -523,7 +523,23 @@
 			"file": "Cartesian.hs",
 			"settings":
 			{
-				"buffer_size": 2460,
+				"buffer_size": 3456,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Jonatan/Desktop/Haskell/modules/Utilities/Format.hs",
+			"settings":
+			{
+				"buffer_size": 1432,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Jonatan/Desktop/Haskell/modules/Utilities/Utilities.hs",
+			"settings":
+			{
+				"buffer_size": 2350,
 				"line_ending": "Windows"
 			}
 		}
@@ -543,8 +559,20 @@
 				"Git: Commit"
 			],
 			[
+				"add",
+				"Git: Add..."
+			],
+			[
 				"ad",
 				"Git: Add..."
+			],
+			[
+				"key",
+				"Preferences: Key Bindings - User"
+			],
+			[
+				"build",
+				"SublimeHaskell: Build"
 			],
 			[
 				"upda",
@@ -601,10 +629,6 @@
 			[
 				"cl",
 				"Project: Close"
-			],
-			[
-				"add",
-				"Git: Add..."
 			],
 			[
 				"imp",
@@ -725,10 +749,6 @@
 			[
 				"pref",
 				"Preferences: Settings - Default"
-			],
-			[
-				"key",
-				"Preferences: Key Bindings - Default"
 			],
 			[
 				"git add",
@@ -1041,10 +1061,6 @@
 			[
 				"sublime",
 				"SublimeLinter: Next Error"
-			],
-			[
-				"key bi",
-				"Preferences: Key Bindings - User"
 			]
 		],
 		"width": 464.0
@@ -1100,8 +1116,10 @@
 	},
 	"file_history":
 	[
-		"/C/Users/Jonatan/Desktop/Haskell/modules/Cartesian/README.md",
 		"/C/Users/Jonatan/Desktop/Haskell/modules/Cartesian/.gitignore",
+		"/C/Users/Jonatan/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/Jonatan/Desktop/Java/QMUL/Jon/2015/Files (7)/AssignmentSeven.hs",
+		"/C/Users/Jonatan/Desktop/Haskell/modules/Cartesian/README.md",
 		"/C/Users/Jonatan/Desktop/Haskell/projects/Chess/ElegantChess.cabal",
 		"/C/Users/Jonatan/Desktop/Python/experiments/WaveFront/data/villa.obj",
 		"/C/Users/Jonatan/Dropbox/Jon & Jay/Blender/Queen.obj",
@@ -1170,7 +1188,6 @@
 		"/C/Users/Jonatan/Desktop/Java/examples/HelloWorldSwing.java",
 		"/C/Users/Jonatan/Desktop/Java/MusicQuiz/Chrome.java",
 		"/C/Users/Jonatan/Desktop/Python/projects/Fractals/Fractals.py",
-		"/C/Users/Jonatan/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Users/Jonatan/Desktop/Python/startup.py",
 		"/C/Users/Jonatan/Dropbox/Jon & Jay/Uni assignments/SAPE8.java",
 		"/C/Users/Jonatan/Dropbox/Jon & Jay/Uni assignments/amendments/SAPE8.java",
@@ -1226,12 +1243,11 @@
 		"/C/Users/Jonatan/Desktop/Python/projects/Hangman/data/dicts/README.md",
 		"/C/Users/Jonatan/Desktop/Python/projects/Hangman/data/settings/README.md",
 		"/C/Users/Jonatan/Desktop/Python/projects/Newtonian/ed4a00de-9aba-4429-a228-78821bf9e32a.dmp",
-		"/C/Users/Jonatan/Desktop/Python/projects/Newtonian/.git/config",
-		"/C/Users/Jonatan/Desktop/Hemsida/index.html"
+		"/C/Users/Jonatan/Desktop/Python/projects/Newtonian/.git/config"
 	],
 	"find":
 	{
-		"height": 28.0
+		"height": 31.0
 	},
 	"find_in_files":
 	{
@@ -1246,6 +1262,13 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"intercept",
+			"coefficients",
+			"Coefficients",
+			"coefficients",
+			"->",
+			", ",
+			"#",
 			"x",
 			"z",
 			"x",
@@ -1366,14 +1389,7 @@
 			"print",
 			"g Mes",
 			"group",
-			"f ([0-9]+/[0-9]+/[0-9] ){17}",
-			"f ([0-9]+/[0-9]+/[0-9] ){116}",
-			"f ([0-9]+/[0-9]+/[0-9]){2}",
-			"f ([0-9]+/[0-9]+/[0-9]){3}",
-			"f ([0-9]+/[0-9]+/[0-9]){3,7}",
-			"f ([0-9]+/[0-9]+/[0-9]){3,4}",
-			"f ([0-9]+/[0-9]+/[0-9]){3:4}",
-			"f ([0-9]+/[0-9]+/[0-9]){3-4}"
+			"f ([0-9]+/[0-9]+/[0-9] ){17}"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1420,15 +1436,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2460,
+						"buffer_size": 3456,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								216,
-								216
+								333,
+								333
 							]
 						],
 						"settings":
@@ -1436,10 +1452,66 @@
 							"syntax": "Packages/SublimeHaskell/Syntaxes/Haskell-SublimeHaskell.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 105.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Users/Jonatan/Desktop/Haskell/modules/Utilities/Format.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1432,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								28,
+								28
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/SublimeHaskell/Syntaxes/Haskell-SublimeHaskell.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 759.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Users/Jonatan/Desktop/Haskell/modules/Utilities/Utilities.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2350,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1434,
+								1434
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Haskell/Haskell.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
@@ -1447,7 +1519,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 28.0
+		"height": 31.0
 	},
 	"input":
 	{
@@ -1499,7 +1571,7 @@
 	"project": "Cartesian.sublime-project",
 	"replace":
 	{
-		"height": 52.0
+		"height": 58.0
 	},
 	"save_all_on_build": true,
 	"select_file":

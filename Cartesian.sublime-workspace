@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"mini",
+				"minimumBy	(a -> a -> Ordering) -> [a] -> a"
+			],
+			[
 				"bin",
 				"bindEvents"
 			],
@@ -510,10 +514,6 @@
 			[
 				"Create",
 				"CreatePlatforms"
-			],
-			[
-				"text",
-				"textOptions"
 			]
 		]
 	},
@@ -523,7 +523,7 @@
 			"file": "Cartesian.hs",
 			"settings":
 			{
-				"buffer_size": 3456,
+				"buffer_size": 4256,
 				"line_ending": "Windows"
 			}
 		},
@@ -545,9 +545,14 @@
 		}
 	],
 	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
 	"command_palette":
 	{
 		"height": 392.0,
+		"last_filter": "close",
 		"selected_items":
 		[
 			[
@@ -559,11 +564,11 @@
 				"Git: Commit"
 			],
 			[
-				"add",
+				"ad",
 				"Git: Add..."
 			],
 			[
-				"ad",
+				"add",
 				"Git: Add..."
 			],
 			[
@@ -1262,6 +1267,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"beta",
+			"x",
 			"intercept",
 			"coefficients",
 			"Coefficients",
@@ -1387,9 +1394,7 @@
 			"kind=",
 			"%s",
 			"print",
-			"g Mes",
-			"group",
-			"f ([0-9]+/[0-9]+/[0-9] ){17}"
+			"g Mes"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1436,23 +1441,24 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3456,
+						"buffer_size": 4256,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								333,
-								333
+								3519,
+								3519
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/SublimeHaskell/Syntaxes/Haskell-SublimeHaskell.tmLanguage"
+							"syntax": "Packages/SublimeHaskell/Syntaxes/Haskell-SublimeHaskell.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1560.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -1480,10 +1486,10 @@
 							"syntax": "Packages/SublimeHaskell/Syntaxes/Haskell-SublimeHaskell.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 759.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -1505,13 +1511,15 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/Haskell/Haskell.tmLanguage"
+							"syntax": "Packages/SublimeHaskell/Syntaxes/Haskell-SublimeHaskell.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -1568,6 +1576,7 @@
 	{
 		"height": 130.0
 	},
+	"pinned_build_system": "",
 	"project": "Cartesian.sublime-project",
 	"replace":
 	{
@@ -1577,6 +1586,7 @@
 	"select_file":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 			[
@@ -1641,6 +1651,7 @@
 	"select_project":
 	{
 		"height": 500.0,
+		"last_filter": "",
 		"selected_items":
 		[
 			[
@@ -1661,6 +1672,7 @@
 	"select_symbol":
 	{
 		"height": 392.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],

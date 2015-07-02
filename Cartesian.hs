@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Cartesian
+-- Module      :  Cartesian.Cartesian
 -- Copyright   :  (C) 2015 Jonatan H Sundqvist
 -- License     :  MIT-style (see the file LICENSE)
 -- Maintainer  :  Jonatan H Sundqvist <jonatanhsundqvist@gmail.com>
@@ -26,7 +26,7 @@
 
 
 
-module Cartesian where
+module Southpaw.Cartesian.Cartesian where
 
 
 
@@ -87,7 +87,7 @@ euclidean a b = sqrt $ dot a b
 -- TODO: Math notes, MathJax or LaTex
 -- TODO: Intersect for curves and single points (?)
 -- TODO: Polymorphic, typeclass (lines, shapes, ranges, etc.) (?)
-intersect :: Num a => Line a -> Line a => Maybe (Vector a) 
+intersect :: Num a => Line a -> Line a -> Maybe (Vector a) 
 intersect _ _ = Nothing
 
 

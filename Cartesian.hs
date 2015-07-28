@@ -34,7 +34,7 @@ module Southpaw.Cartesian.Cartesian where
 -- We'll need these
 ---------------------------------------------------------------------------------------------------
 import Data.List (sort, minimumBy)
-import Data.Ord (comparing)
+import Data.Ord  (comparing)
 
 
 
@@ -60,8 +60,7 @@ instance Floating a => Num (Vector a) where
 	(*) = dotWise (*) -- TODO: Is this really correct?
 	fromInteger n = Vector (fromInteger n) 0 0
 	signum = id -- TODO: Proper way of implementing this function for vectors
-	-- abs a = Vector (euclidean a) 0 0
-	-- abs (Vector x y z) = sqrt $ (x**2) + (y**2) + (z**2)
+	abs a  = Vector (euclidean a a) 0 0
 
 
 

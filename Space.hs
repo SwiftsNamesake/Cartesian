@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Cartesian.Cartesian
+-- Module      :  Southpaw.Cartesian.Space
 -- Copyright   :  (C) 2015 Jonatan H Sundqvist
 -- License     :  MIT-style (see the file LICENSE)
 -- Maintainer  :  Jonatan H Sundqvist <jonatanhsundqvist@gmail.com>
@@ -19,14 +19,15 @@
 --
 
 -- TODO | - Haddock header, sections, full coverage
---        - Separate 2D and 3D modules (?)
+--        - Separate 2D and 3D modules (✓)
+--        - Factor out common functionality for Space.hs and Plane.hs
 
 -- SPEC | -
 --        -
 
 
 
-module Southpaw.Cartesian.Cartesian where
+module Southpaw.Cartesian.Space where
 
 
 
@@ -41,10 +42,15 @@ import Data.Ord  (comparing)
 ---------------------------------------------------------------------------------------------------
 -- Types
 ---------------------------------------------------------------------------------------------------
+-- |
 data Vector num = Vector num num num -- TODO: Constraints on argument types (cf. GADT) (?)
+
+
+-- |
 data Line num = Line (Vector num) (Vector num) 
 
 
+-- | Why the hell did I write this useless function?
 vector :: Num a => a -> a -> a -> Vector a
 vector = Vector -- SublimeHaskell prefers the eta-reduced version (point-free)
 
@@ -53,20 +59,21 @@ vector = Vector -- SublimeHaskell prefers the eta-reduced version (point-free)
 ---------------------------------------------------------------------------------------------------
 -- Instances
 ---------------------------------------------------------------------------------------------------
-instance Floating a => Num (Vector a) where
+instance (Floating a, Eq a) => Num (Vector a) where
 	-- TODO: Helper method to reduce boilerplate for component-wise operations
 	(+) = dotWise (+)
 	(-) = dotWise (-)
 	(*) = dotWise (*) -- TODO: Is this really correct?
 	fromInteger n = Vector (fromInteger n) 0 0
-	signum = id -- TODO: Proper way of implementing this function for vectors
-	abs a  = Vector (euclidean a a) 0 0
+	signum v@(Vector x y z) = Vector (x/mag v) (y/mag v) (z/mag v) -- TODO: Proper way of implementing this function for vectors
+	abs v                   = Vector (mag v)   (0)       (0)
 
 
 
 ---------------------------------------------------------------------------------------------------
 -- Functions
 ---------------------------------------------------------------------------------------------------
+-- Vector math ------------------------------------------------------------------------------------
 -- | Performs component-wise operations
 dotWise :: (a -> b -> c) -> Vector a -> Vector b -> Vector c
 dotWise f (Vector x y z) (Vector x' y' z') = Vector (f x x') (f y y') (f z z')
@@ -82,12 +89,44 @@ euclidean :: Floating a => Vector a -> Vector a -> a
 euclidean a b = sqrt $ dot a b
 
 
+-- |
+magnitude :: (Floating a, Eq a) => Vector a -> a
+magnitude v = euclidean v v
+
+mag :: (Floating a, Eq a) => Vector a -> a
+mag = magnitude 
+
+
+-- | Angle (in radians) between the positive X-axis and the vector 
+-- argument :: (Floating a, Eq a) => Vector a -> a
+-- argument (Vector 0 0 0) = 0
+-- argument (Vector x y z) = atan $ y/x
+
+
+-- arg :: (Floating a, Eq a) => Vector a -> a
+-- arg = argument
+
+
+-- | Vector -> (magnitude, argument)
+-- polar :: (Floating a, Eq a) => Vector a -> (a, a)
+-- polar v@(Vector x y) = (magnitude v, argument v)
+
+
+---------------------------------------------------------------------------------------------------
+
 -- | Intersect
 -- TODO: Math notes, MathJax or LaTex
--- TODO: Intersect for curves and single points (?)
+-- TODO: Intersect for curves (functions) and single points (?)
 -- TODO: Polymorphic, typeclass (lines, shapes, ranges, etc.) (?)
 intersect :: Num a => Line a -> Line a -> Maybe (Vector a) 
-intersect _ _ = Nothing
+intersect _ _ = error "Not implemented" -- Nothing
+
+
+-- |
+intersects :: Num a => Line a -> Line a -> Bool 
+intersects a b = case intersect a b of
+	Just _  -> True
+	Nothing -> False
 
 
 -- | Yields the overlap of two closed intervals (n ∈ R)

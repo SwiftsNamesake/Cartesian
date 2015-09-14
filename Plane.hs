@@ -1,12 +1,12 @@
 -- |
 -- Module      : Southpaw.Cartesian.Plane
--- Description : 
+-- Description :
 -- Copyright   : (c) Jonatan H Sundqvist, year
 -- License     : MIT
 -- Maintainer  : Jonatan H Sundqvist
 -- Stability   : experimental|stable
 -- Portability : POSIX (not sure)
--- 
+--
 
 -- Created date year
 
@@ -18,6 +18,9 @@
 
 
 
+---------------------------------------------------------------------------------------------------
+-- API
+---------------------------------------------------------------------------------------------------
 module Southpaw.Cartesian.Plane where
 
 
@@ -27,6 +30,9 @@ module Southpaw.Cartesian.Plane where
 ---------------------------------------------------------------------------------------------------
 import Data.List (sort, minimumBy)
 import Data.Ord  (comparing)
+import Data.Complex hiding (magnitude)
+
+import qualified Control.Lens as L
 
 import Southpaw.Utilities.Utilities (pairwise)
 
@@ -35,13 +41,14 @@ import Southpaw.Utilities.Utilities (pairwise)
 ---------------------------------------------------------------------------------------------------
 -- Types
 ---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- |
 -- TODO: Rename (?)
 data Vector num = Vector num num deriving (Eq, Show) -- TODO: Constraints on argument types (cf. GADT) (?)
 
 
 -- |
-data Line num = Line (Vector num) (Vector num) 
+data Line num = Line (Vector num) (Vector num)
 
 
 -- |
@@ -53,12 +60,13 @@ type Polygon num = [Vector num]
 data Linear num = Linear { intercept :: num, slope :: num }
 
 
+---------------------------------------------------------------------------------------------------
 -- |
 -- type Domain
 
 
 -- | Determines if a point lies within a polygon using the odd-even method.
---   
+--
 -- TODO: Use epsilon (?)
 -- TODO: How to treat points that lie on an edge
 inside :: Num n => Polygon n -> Vector n -> Bool
@@ -109,10 +117,10 @@ magnitude :: (Floating a, Eq a) => Vector a -> a
 magnitude v = euclidean v v
 
 mag :: (Floating a, Eq a) => Vector a -> a
-mag = magnitude 
+mag = magnitude
 
 
--- | Angle (in radians) between the positive X-axis and the vector 
+-- | Angle (in radians) between the positive X-axis and the vector
 argument :: (Floating a, Eq a) => Vector a -> a
 argument (Vector 0 0) = 0
 argument (Vector x y) = atan $ y/x
@@ -161,7 +169,7 @@ intersect a b
 
 
 -- |
-intersects :: RealFrac r => Line r -> Line r -> Bool 
+intersects :: RealFrac r => Line r -> Line r -> Bool
 intersects a b = case intersect a b of
 	Just _  -> True
 	Nothing -> False
@@ -171,8 +179,8 @@ intersects a b = case intersect a b of
 -- TODO: Normalise intervals (eg. (12, 5) -> (5, 12))
 overlap :: Real a => (a, a) -> (a, a) -> Maybe (a, a)
 overlap a b
-	| leftmost /= (α, β) = Just (β, γ) -- 
-	| otherwise          = Nothing     -- 
+	| leftmost /= (α, β) = Just (β, γ) --
+	| otherwise          = Nothing     --
 	where [α, β, γ, _] = sort [fst a, snd a, fst b, snd b] -- That's right.
 	      leftmost     = minimumBy (comparing fst) [a, b]  --
 

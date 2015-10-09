@@ -10,7 +10,7 @@
 
 -- Created September 7 2015
 
--- TODO | -
+-- TODO | - Corner lenses
 --        -
 
 -- SPEC | -
@@ -37,6 +37,7 @@ module Southpaw.Cartesian.Plane.BoundingBox (module Southpaw.Cartesian.Plane.Typ
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
 import Data.Complex
+import Data.Functor ((<$>))
 import Control.Lens
 
 import Southpaw.Cartesian.Plane.Types
@@ -50,9 +51,19 @@ import Southpaw.Cartesian.Plane.Utilities
 -- Bounding boxes --------------------------------------------------------------------------------------------------------------------------
 -- |
 -- TODO: Better name (?)
--- TODO: Don't make assumptions about WHICH corners they are
+-- TODO: Don't make assumptions about WHICH corners they are (✓)
 fromCorners :: RealFloat f => Complex f -> Complex f -> BoundingBox f
-fromCorners nw@(n:+w) se@(s:+e) = let size = dotmap abs (se-nw) in BoundingBox { _centre=(min n s:+min w e)+size*(0.5:+0.0), _size=size }
+fromCorners nw@(n:+w) se@(s:+e) = let size = dotmap abs (se-nw) in BoundingBox { _centre=dotwise min nw se+size*(0.5:+0.0), _size=size }
+
+
+-- | Creates a bounding box from a topleft and size vector.
+fromCornerAndSize :: RealFloat f => Complex f -> Complex f -> BoundingBox f
+fromCornerAndSize nw size' = BoundingBox { _centre=nw+size'*0.5, _size=size' }
+
+
+-- | Top Left Bottom Right
+fromSides :: RealFloat f => f -> f -> f -> f -> BoundingBox f
+fromSides top left bottom right = fromCorners (left:+top) (right:+bottom)
 
 
 -- Lenses ----------------------------------------------------------------------------------------------------------------------------------
@@ -60,11 +71,22 @@ fromCorners nw@(n:+w) se@(s:+e) = let size = dotmap abs (se-nw) in BoundingBox {
 -- TODO: Make sure invariants remain true (eg. left < right)
 -- TODO: Make coordinate-system independent (eg. direction of axes)
 makeBoundingBoxSideLens :: RealFloat f => (BoundingBox f -> f) -> (BoundingBox f -> f -> (f, f, f, f)) -> Lens (BoundingBox f) (BoundingBox f) f f
-makeBoundingBoxSideLens oldside newsides f s@(BoundingBox { _centre=(cx:+cy), _size=(dx:+dy) }) = assemble `fmap` f (oldside s)
+makeBoundingBoxSideLens oldside newsides f s@(BoundingBox { _centre=(cx:+cy), _size=(dx:+dy) }) = assemble <$> f (oldside s)
   where
     assemble newside = let (nleft, nright, ntop, nbottom) = newsides s newside
                            newsize                        = (nright-nleft):+(nbottom-ntop)
                        in BoundingBox { _centre=(nleft:+ntop)+(newsize*(0.5:+0.0)), _size=newsize }
+
+
+-- Core ------------------------------------------------------------------------------------------------------------------------------------
+-- |
+centre :: RealFloat f => Lens (BoundingBox f) (BoundingBox f) (Complex f) (Complex f)
+centre f s = let assemble new = s { _centre=new } in assemble <$> f (_centre s)
+
+
+-- |
+size :: RealFloat f => Lens (BoundingBox f) (BoundingBox f) (Complex f) (Complex f)
+size f s = let assemble new = s { _size=new } in assemble <$> f (_size s)
 
 
 -- Sides (absolute) ------------------------------------------------------------------------------------------------------------------------

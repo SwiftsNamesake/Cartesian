@@ -1,6 +1,5 @@
------------------------------------------------------------------------------
 -- |
--- Module      :  Southpaw.Cartesian.Space
+-- Module      :  Cartesian.Space
 -- Copyright   :  (C) 2015 Jonatan H Sundqvist
 -- License     :  MIT-style (see the file LICENSE)
 -- Maintainer  :  Jonatan H Sundqvist <jonatanhsundqvist@gmail.com>
@@ -8,7 +7,6 @@
 -- Portability :  Portable
 --
 -- Vector and coordinate system utilities.
------------------------------------------------------------------------------
 
 --
 -- Cartesian.hs
@@ -27,27 +25,28 @@
 
 
 
-module Southpaw.Cartesian.Space where
+module Cartesian.Space where
 
 
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 import Data.List (sort, minimumBy)
 import Data.Ord  (comparing)
 
 
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- Types
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
+
 -- |
 data Vector num = Vector num num num -- TODO: Constraints on argument types (cf. GADT) (?)
 
 
 -- |
-data Line num = Line (Vector num) (Vector num) 
+data Line num = Line (Vector num) (Vector num)
 
 
 -- | Why the hell did I write this useless function?
@@ -56,27 +55,30 @@ vector = Vector -- SublimeHaskell prefers the eta-reduced version (point-free)
 
 
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- Instances
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+-- |
 instance (Floating a, Eq a) => Num (Vector a) where
 	-- TODO: Helper method to reduce boilerplate for component-wise operations
-	(+) = dotWise (+)
-	(-) = dotWise (-)
-	(*) = dotWise (*) -- TODO: Is this really correct?
+	(+) = dotwise (+)
+	(-) = dotwise (-)
+	(*) = dotwise (*) -- TODO: Is this really correct?
 	fromInteger n = Vector (fromInteger n) 0 0
 	signum v@(Vector x y z) = Vector (x/mag v) (y/mag v) (z/mag v) -- TODO: Proper way of implementing this function for vectors
 	abs v                   = Vector (mag v)   (0)       (0)
 
 
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- Functions
----------------------------------------------------------------------------------------------------
--- Vector math ------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Vector math -----------------------------------------------------------------------------------------------------------------------------
 -- | Performs component-wise operations
-dotWise :: (a -> b -> c) -> Vector a -> Vector b -> Vector c
-dotWise f (Vector x y z) (Vector x' y' z') = Vector (f x x') (f y y') (f z z')
+dotwise :: (a -> b -> c) -> Vector a -> Vector b -> Vector c
+dotwise f (Vector x y z) (Vector x' y' z') = Vector (f x x') (f y y') (f z z')
 
 
 -- | Dot product of two vectors
@@ -94,10 +96,10 @@ magnitude :: (Floating a, Eq a) => Vector a -> a
 magnitude v = euclidean v v
 
 mag :: (Floating a, Eq a) => Vector a -> a
-mag = magnitude 
+mag = magnitude
 
 
--- | Angle (in radians) between the positive X-axis and the vector 
+-- | Angle (in radians) between the positive X-axis and the vector
 -- argument :: (Floating a, Eq a) => Vector a -> a
 -- argument (Vector 0 0 0) = 0
 -- argument (Vector x y z) = atan $ y/x
@@ -111,19 +113,18 @@ mag = magnitude
 -- polar :: (Floating a, Eq a) => Vector a -> (a, a)
 -- polar v@(Vector x y) = (magnitude v, argument v)
 
-
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 
 -- | Intersect
 -- TODO: Math notes, MathJax or LaTex
 -- TODO: Intersect for curves (functions) and single points (?)
 -- TODO: Polymorphic, typeclass (lines, shapes, ranges, etc.) (?)
-intersect :: Num a => Line a -> Line a -> Maybe (Vector a) 
+intersect :: Num a => Line a -> Line a -> Maybe (Vector a)
 intersect _ _ = error "Not implemented" -- Nothing
 
 
 -- |
-intersects :: Num a => Line a -> Line a -> Bool 
+intersects :: Num a => Line a -> Line a -> Bool
 intersects a b = case intersect a b of
 	Just _  -> True
 	Nothing -> False
@@ -154,13 +155,3 @@ coefficients (Line (Vector ax ay _) (Vector bx by _))
 	| ax == bx  = Nothing
 	| ay == ay  = Nothing
 	| otherwise = let slope = (by - ay)/(bx - ax) in Just (slope, ay - slope*ax)
-
-
-
----------------------------------------------------------------------------------------------------
--- Entry point
----------------------------------------------------------------------------------------------------
-main :: IO ()
-main = do
-	putStrLn "Hello World"
-	putStrLn "Hola Mundo!"

@@ -19,6 +19,7 @@
 -- TODO | - Haddock header, sections, full coverage
 --        - Separate 2D and 3D modules (✓)
 --        - Factor out common functionality for Space.hs and Plane.hs
+--        - Use existing vector type (eg. Linear.V3)
 
 -- SPEC | -
 --        -
@@ -35,39 +36,7 @@ module Cartesian.Space where
 import Data.List (sort, minimumBy)
 import Data.Ord  (comparing)
 
-
-
---------------------------------------------------------------------------------------------------------------------------------------------
--- Types
---------------------------------------------------------------------------------------------------------------------------------------------
-
--- |
-data Vector num = Vector num num num -- TODO: Constraints on argument types (cf. GADT) (?)
-
-
--- |
-data Line num = Line (Vector num) (Vector num)
-
-
--- | Why the hell did I write this useless function?
-vector :: Num a => a -> a -> a -> Vector a
-vector = Vector -- SublimeHaskell prefers the eta-reduced version (point-free)
-
-
-
---------------------------------------------------------------------------------------------------------------------------------------------
--- Instances
---------------------------------------------------------------------------------------------------------------------------------------------
-
--- |
-instance (Floating a, Eq a) => Num (Vector a) where
-	-- TODO: Helper method to reduce boilerplate for component-wise operations
-	(+) = dotwise (+)
-	(-) = dotwise (-)
-	(*) = dotwise (*) -- TODO: Is this really correct?
-	fromInteger n = Vector (fromInteger n) 0 0
-	signum v@(Vector x y z) = Vector (x/mag v) (y/mag v) (z/mag v) -- TODO: Proper way of implementing this function for vectors
-	abs v                   = Vector (mag v)   (0)       (0)
+import Cartesian.Space.Types
 
 
 
@@ -76,6 +45,7 @@ instance (Floating a, Eq a) => Num (Vector a) where
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 -- Vector math -----------------------------------------------------------------------------------------------------------------------------
+
 -- | Performs component-wise operations
 dotwise :: (a -> b -> c) -> Vector a -> Vector b -> Vector c
 dotwise f (Vector x y z) (Vector x' y' z') = Vector (f x x') (f y y') (f z z')

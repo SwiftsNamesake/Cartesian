@@ -1,5 +1,5 @@
 -- |
--- Module      : Cartesian.Plane.Utilities
+-- Module      : Cartesian.Internal.Types
 -- Description :
 -- Copyright   : (c) Jonatan H Sundqvist, 2015
 -- License     : MIT
@@ -8,10 +8,10 @@
 -- Portability : POSIX (not sure)
 --
 
--- Created September 8 2015
+-- Created October 31 2015
 
--- TODO | - Uses lenses for Complex type (?)
---        -
+-- TODO | - Use TemplateHaskell (?)
+--        - Strictness
 
 -- SPEC | -
 --        -
@@ -21,51 +21,56 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- GHC Pragmas
 --------------------------------------------------------------------------------------------------------------------------------------------
+{-# LANGUAGE TemplateHaskell #-}
 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- API
 --------------------------------------------------------------------------------------------------------------------------------------------
-module Cartesian.Plane.Utilities where
+module Cartesian.Internal.Types where
 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
-import Data.Complex
+
 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
--- Functions
+-- Types
 --------------------------------------------------------------------------------------------------------------------------------------------
--- | Applies a function to each component in a vector
-dotmap :: (a -> b) -> Complex a -> Complex b
-dotmap f (re:+im) = f re :+ f im
+
+-- Types -----------------------------------------------------------------------------------------------------------------------------------
+
+-- |
+data BoundingBox v = BoundingBox { centreOf :: v, sizeOf :: v }
+
+-- Classes ---------------------------------------------------------------------------------------------------------------------------------
+
+-- |
+-- TODO: Use GADT instead (?)
+class Vector v f | v -> f where
+  fromScalar :: f -> v
 
 
 -- |
-dotwise :: (a -> a -> b) -> Complex a -> Complex a -> Complex b
-dotwise f (re:+im) (re':+im') = f re re':+ f im im'
+class HasX a f | a -> f where
+  getX :: a -> f
+  setX :: a -> f -> a
 
 
--- | Negates the real component (X)
-flipx :: Complex Double -> Complex Double
-flipx (x:+y) = (-x):+y
+-- |
+class HasY a f | a -> f where
+  getY :: a -> f
+  setY :: a -> f -> a
 
 
--- | Negates the imaginary component (Y)
-flipy :: Complex Double -> Complex Double
-flipy (x:+y) = x:+(-y)
+-- |
+class HasZ a f | a -> f where
+  getZ :: a -> f
+  setZ :: a -> f -> a
 
-
--- | Creates a number on the real line (where the imaginary part is 0)
-real :: Double -> Complex Double
-real = (:+ 0)
-
-
--- | Creates a number on the imaginary line (where the real part is 0)
-imag :: Double -> Complex Double
-imag = (0 :+)
+-- Instances -------------------------------------------------------------------------------------------------------------------------------

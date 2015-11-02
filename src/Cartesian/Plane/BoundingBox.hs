@@ -29,7 +29,7 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 module Cartesian.Plane.BoundingBox (module Cartesian.Plane.Types,
                                     module Cartesian.Plane.BoundingBox,
-                                    module Cartesian.Plane.BoundingBox.Lenses) where
+                                    module Cartesian.Plane.Lenses) where
 
 
 
@@ -43,7 +43,7 @@ import Data.List (sort)
 import Control.Lens
 
 import Cartesian.Plane.Types
-import Cartesian.Plane.BoundingBox.Lenses
+import Cartesian.Plane.Lenses
 import Cartesian.Plane.Utilities
 
 
@@ -78,8 +78,3 @@ intersect a b = do
   (left', right')  <- overlap (a^.left, a^.right)  (b^.left, b^.right)
   (top',  bottom') <- overlap (a^.top,  a^.bottom) (b^.top,  b^.bottom)
   return $ fromSides top' left' bottom' right'
-  where
-    overlap (a, b) (c, d)
-      | min (a, b) (c, d) == (a', b') = Just (b', c')
-      | otherwise                     = Nothing
-      where [a', b', c', d'] = sort [a, b, c, d]

@@ -48,11 +48,15 @@ cabal-version:       >=1.10
 
 library
   -- Modules exported by the library.
-  exposed-modules:     Cartesian.Lenses, Cartesian.Plane, Cartesian.Space,
-                       Cartesian.Plane.Utilities, Cartesian.Plane.Types, Cartesian.Plane.BoundingBox, Cartesian.Plane.BoundingBox.Lenses
+  exposed-modules:     Cartesian.Plane,       Cartesian.Space,        Cartesian.Types
+                       Cartesian.Plane.Types, Cartesian.Plane.Lenses, Cartesian.Plane.BoundingBox,
+                       Cartesian.Space.Types, Cartesian.Space.Lenses,
+
+                       Cartesian.Internal.Types, Cartesian.Internal.Core, Cartesian.Internal.Lenses
 
   -- Modules included in this library but not exported.
-  -- other-modules:
+
+  other-modules:       Cartesian.Internal.Types
 
   -- LANGUAGE extensions used by modules in this package.
   other-extensions:    TemplateHaskell, RankNTypes

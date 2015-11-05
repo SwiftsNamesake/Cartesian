@@ -1,5 +1,5 @@
 -- |
--- Module      : Cartesian.Types
+-- Module      : Cartesian.Internal.Utils
 -- Description :
 -- Copyright   : (c) Jonatan H Sundqvist, 2015
 -- License     : MIT
@@ -8,7 +8,7 @@
 -- Portability : POSIX (not sure)
 --
 
--- Created _ _ 2015
+-- Created November 2 2015
 
 -- TODO | -
 --        -
@@ -28,17 +28,24 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- API
 --------------------------------------------------------------------------------------------------------------------------------------------
-module Cartesian.Types where
+module Cartesian.Internal.Utils where
 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
-
+import Data.List     (isSuffixOf)
+import Control.Monad (mfilter)
 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- Functions
 --------------------------------------------------------------------------------------------------------------------------------------------
+
+-- | Removes the given suffix if it exists, does nothing otherwise
+-- TODO: Move to utils module or use existing implementation
+-- TODO: Refactor
+dropSuffix :: (Eq a) => [a] -> [a] -> [a]
+dropSuffix su xs = maybe xs (take (length xs - length su)) $ mfilter (su `isSuffixOf`) (Just xs)

@@ -21,7 +21,8 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- GHC Pragmas
 --------------------------------------------------------------------------------------------------------------------------------------------
-
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE FlexibleInstances     #-}
 
 
 
@@ -35,7 +36,11 @@ module Cartesian.Space.Types where
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
+import Control.Lens
 
+import Cartesian.Internal.Types
+import Cartesian.Internal.Lenses
+import Cartesian.Internal.Core
 
 
 
@@ -44,26 +49,43 @@ module Cartesian.Space.Types where
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 -- |
-data Vector3D f = Vector f f f -- TODO: Constraints on argument types (cf. GADT) (?)
+data Vector3D f = Vector3D f f f -- TODO: Constraints on argument types (cf. GADT) (?)
 
 
 -- |
-data Line f = Line (Vector f) (Vector f)
+data Line f = Line (Vector3D f) (Vector3D f)
 
 
 -- |
-data BoundingBox f = BoundingBox { _centre :: Vector f, _size :: Vector f }
-
-
+-- data BoundingBox f = BoundingBox { _centre :: Vector f, _size :: Vector f }
 
 -- Instances -------------------------------------------------------------------------------------------------------------------------------
 
 -- |
-instance (Floating a, Eq a) => Num (Vector a) where
-	-- TODO: Helper method to reduce boilerplate for component-wise operations
-	(+) = dotwise (+)
-	(-) = dotwise (-)
-	(*) (Vector x y z) (Vector x' y' z') = Vector (x*) -- TODO: Is this really correct?
-	fromInteger n = Vector (fromInteger n) 0 0
-	signum v@(Vector x y z) = Vector (x/mag v) (y/mag v) (z/mag v) -- TODO: Proper way of implementing this function for vectors
-	abs v                   = Vector (mag v)   (0)       (0)
+-- TODO: Refactor. A lot.
+instance Vector Vector3D where
+  vfold f a (Vector3D x' y' z')                        = f (f (f a x') y') z'
+  vzip  f   (Vector3D x' y' z') (Vector3D x'' y'' z'') = Vector3D (f x' x'') (f y' y'') (f z' z'')
+
+-- |
+instance (Floating v, Eq v) => Num (Vector3D v) where
+  -- TODO: Helper method to reduce boilerplate for component-wise operations
+  (+) = dotwise (+)
+  (-) = dotwise (-)
+  (*) (Vector3D x y z) (Vector3D x' y' z') = undefined -- TODO: Is this really correct?
+  fromInteger n = Vector3D (fromInteger n) 0 0
+  signum v@(Vector3D x' y' z') = Vector3D (x'/(abs v^.x)) (y'/(abs v^.x)) (z'/(abs v^.x)) -- TODO: Proper way of implementing this function for vectors
+  abs (Vector3D x' y' z')      = Vector3D (sqrt $ (x'**2) + (y'**2) + (z'**2)) (0) (0)
+
+
+instance HasX (Vector3D f) f where
+  getX (Vector3D x' _  _)     = x'
+  setX (Vector3D _  y' z') x' = Vector3D x' y' z'
+
+instance HasY (Vector3D f) f where
+  getY (Vector3D y' _ _)     = y'
+  setY (Vector3D x' _ z') y' = Vector3D x' y' z'
+
+instance HasZ (Vector3D f) f where
+  getZ (Vector3D z' _  _)    = z'
+  setZ (Vector3D x' y' _) z' = Vector3D x' y' z'

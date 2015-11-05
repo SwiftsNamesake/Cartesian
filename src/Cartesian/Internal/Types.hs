@@ -21,7 +21,9 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- GHC Pragmas
 --------------------------------------------------------------------------------------------------------------------------------------------
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TemplateHaskell        #-}
+{-# LANGUAGE MultiParamTypeClasses  #-}
+{-# LANGUAGE FunctionalDependencies #-}
 
 
 
@@ -46,14 +48,17 @@ module Cartesian.Internal.Types where
 -- Types -----------------------------------------------------------------------------------------------------------------------------------
 
 -- |
+-- TODO: Anchors (eg. C, N, S, E W and combinations thereof, perhaps represented as relative Vectors)
 data BoundingBox v = BoundingBox { centreOf :: v, sizeOf :: v }
 
 -- Classes ---------------------------------------------------------------------------------------------------------------------------------
 
 -- |
 -- TODO: Use GADT instead (?)
-class Vector v f | v -> f where
-  fromScalar :: f -> v
+-- TODO: Reduce boilerplate, figure out deriving, choose interface carefully
+class Vector v where
+  vfold :: (f' -> f  -> f')  -> f'  -> v f  -> f'
+  vzip  :: (f  -> f' -> f'') -> v f -> v f' -> v f''
 
 
 -- |

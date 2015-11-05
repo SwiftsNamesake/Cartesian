@@ -42,9 +42,13 @@ import Data.List (sort)
 
 import Control.Lens
 
+import Cartesian.Internal.Types
+import Cartesian.Internal.Lenses
+import Cartesian.Internal.Core
+
 import Cartesian.Plane.Types
 import Cartesian.Plane.Lenses
-import Cartesian.Plane.Utilities
+-- import Cartesian.Plane.Utilities
 
 
 

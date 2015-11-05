@@ -37,12 +37,14 @@ module Cartesian.Internal.Lenses where
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
-import Data.List (isSuffixOf)
+import Data.List     (isSuffixOf)
+import Control.Monad (mfilter)
 import Control.Lens
 
--- import Language.Haskell.TH
+import Language.Haskell.TH
 
 import Cartesian.Internal.Types
+import Cartesian.Internal.Utils
 
 
 
@@ -73,17 +75,14 @@ z = lens getZ setZ
 -- TODO: Type-changing lenses (?)
 
 
-makeLensesWith ''BoundingBox (lensRules & lensField .~ stripSuffix "Of") -- TODO: 'Of'
-  where
-    stripSuffix su xs
-      | su `isSuffixOf` field = Just $ reverse . drop (length suffix) . reverse $ xs
-      | otherwise             = Nothing
+-- | Ugh...
+makeLensesWith (lensRules & lensField .~ (\_ _ name -> [TopName (mkName $ dropSuffix "Of" (nameBase name))])) (''BoundingBox) -- TODO: 'Of'
 
 
 -- |
 -- TODO: Rename (?)
 offset :: (Fractional f) => (Getter v f) -> (f -> f -> f) -> BoundingBox v -> f
-offset axis towards box = towards (box^.centre.c) (0.5 * box^.size.c)
+offset axis towards box = towards (box^.centre.axis) (0.5 * box^.size.axis)
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -92,18 +91,18 @@ offset axis towards box = towards (box^.centre.c) (0.5 * box^.size.c)
 -- pad by axis direction = _
 
 
--- | Moves one side of a BoundingBox along the given 'axis' so that its new position is at 'to'.
---  The 'towards' parameter is expected to be either (-) and (+), indicating which side along
---  the axis we're dealing with.
+-- | Moves one side of a BoundingBox along the given 'axis' so that its new position is at 'to'. The 'towards' parameter is expected to be
+--   either (-) and (+), indicating which side along the axis we're dealing with.
 -- TODO: Turn this into a lens function (?)
 -- TODO: Polish description
-side :: (Fractional f) => Getter v f -> (f -> f -> f) -> Lens (BoundingBox v) (BoundingBox v) f f
+-- TODO: Loosen constraint on f
+side :: (Fractional f) => Lens v v f f -> (f -> f -> f) -> Lens (BoundingBox v) (BoundingBox v) f f
 side axis towards = lens get set
   where
     get = offset axis towards
-    set box to = BoundingBox { _size=s.axis .~ abs (to - towards centre' (-s*0.5)), _centre=c.axis .~ _ }
-    centre' = box^.centre.axis --
-    size'   = box^.size.axis   --
+    set box to = let newsize = abs (to - towards centre' (-(box^.size.axis)*0.5))
+                     centre' = box^.centre.axis --
+                 in BoundingBox { sizeOf=(box^.size) & axis .~ newsize, centreOf=(box^.centre) & axis .~ (to `towards` negate (newsize*0.5)) } -- TODO: Refactor. And then refactor some more.
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 

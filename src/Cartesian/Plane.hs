@@ -71,9 +71,9 @@ data Linear num = Linear { intercept :: num, slope :: num }
 -- TODO: How to treat points that lie on an edge
 inside :: Num n => Polygon n -> Vector n -> Bool
 inside (p:olygon) (Vector x y) = undefined
-	where
-		lines   = (p:olygon)++[p] -- Close the loop
-		-- between (Line (Vector ax ay) (Vector bx by)) = _
+  where
+    lines   = (p:olygon)++[p] -- Close the loop
+    -- between (Line (Vector ax ay) (Vector bx by)) = _
 
 
 
@@ -82,14 +82,14 @@ inside (p:olygon) (Vector x y) = undefined
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- | abs v * signum v == v
 instance (Floating a, Eq a) => Num (Vector a) where
-	-- TODO: Helper method to reduce boilerplate for component-wise operations
-	(+) = dotwise (+)
-	(-) = dotwise (-)
-	(*) = dotwise (*) -- TODO: Is this really correct?
-	fromInteger n = Vector (fromInteger n) 0
-	signum (Vector 0 0) = Vector 0 0
-	signum v@(Vector x y) = Vector (x/mag v) (y/mag v)
-	abs a  = Vector (euclidean a a) 0
+  -- TODO: Helper method to reduce boilerplate for component-wise operations
+  (+) = dotwise (+)
+  (-) = dotwise (-)
+  (*) = dotwise (*) -- TODO: Is this really correct?
+  fromInteger n = Vector (fromInteger n) 0
+  signum (Vector 0 0) = Vector 0 0
+  signum v@(Vector x y) = Vector (x/mag v) (y/mag v)
+  abs a  = Vector (euclidean a a) 0
 
 
 
@@ -171,18 +171,18 @@ intersect a b
 -- |
 intersects :: RealFrac r => Line r -> Line r -> Bool
 intersects a b = case intersect a b of
-	Just _  -> True
-	Nothing -> False
+  Just _  -> True
+  Nothing -> False
 
 
 -- | Yields the overlap of two closed intervals (n ∈ R)
 -- TODO: Normalise intervals (eg. (12, 5) -> (5, 12))
 overlap :: Real a => (a, a) -> (a, a) -> Maybe (a, a)
 overlap a b
-	| leftmost /= (α, β) = Just (β, γ) --
-	| otherwise          = Nothing     --
-	where [α, β, γ, _] = sort [fst a, snd a, fst b, snd b] -- That's right.
-	      leftmost     = minimumBy (comparing fst) [a, b]  --
+  | leftmost /= (α, β) = Just (β, γ) --
+  | otherwise          = Nothing     --
+  where [α, β, γ, _] = sort [fst a, snd a, fst b, snd b] -- That's right.
+        leftmost     = minimumBy (comparing fst) [a, b]  --
 
 
 -- |
@@ -198,9 +198,9 @@ overlap a b
 --
 coefficients :: (Fractional a, Eq a) => Line a -> Maybe (a, a)
 coefficients (Line (Vector ax ay) (Vector bx by))
-	| ax == bx  = Nothing
-	| ay == ay  = Nothing
-	| otherwise = let slope' = (by - ay)/(bx - ax) in Just (slope', ay - slope'*ax)
+  | ax == bx  = Nothing
+  | ay == ay  = Nothing
+  | otherwise = let slope' = (by - ay)/(bx - ax) in Just (slope', ay - slope'*ax)
 
 
 -- Linear functions -------------------------------------------------------------------------------
@@ -208,5 +208,5 @@ coefficients (Line (Vector ax ay) (Vector bx by))
 -- TODO: Use Epsilon (?)
 solve :: (Fractional n, Eq n) => Linear n -> Linear n -> Maybe n
 solve f g
-	| slope f == slope g = Nothing
-	| otherwise          = Just $ (intercept f - intercept g)/(slope f - slope g)
+  | slope f == slope g = Nothing
+  | otherwise          = Just $ (intercept f - intercept g)/(slope f - slope g)

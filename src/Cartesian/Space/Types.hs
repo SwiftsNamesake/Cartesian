@@ -48,16 +48,14 @@ import Cartesian.Internal.Core
 -- Types
 --------------------------------------------------------------------------------------------------------------------------------------------
 
+--------------------------------------------------------------------------------------------------------------------------------------------
+
 -- |
 data Vector3D f = Vector3D f f f -- TODO: Constraints on argument types (cf. GADT) (?)
 
 
 -- |
 data Line f = Line (Vector3D f) (Vector3D f)
-
-
--- |
--- data BoundingBox f = BoundingBox { _centre :: Vector f, _size :: Vector f }
 
 -- Instances -------------------------------------------------------------------------------------------------------------------------------
 
@@ -73,9 +71,9 @@ instance (Floating v, Eq v) => Num (Vector3D v) where
   (+) = dotwise (+)
   (-) = dotwise (-)
   (*) (Vector3D x y z) (Vector3D x' y' z') = undefined -- TODO: Is this really correct?
-  fromInteger n = Vector3D (fromInteger n) 0 0
-  signum v@(Vector3D x' y' z') = Vector3D (x'/(abs v^.x)) (y'/(abs v^.x)) (z'/(abs v^.x)) -- TODO: Proper way of implementing this function for vectors
-  abs (Vector3D x' y' z')      = Vector3D (sqrt $ (x'**2) + (y'**2) + (z'**2)) (0) (0)
+  fromInteger x = Vector3D (fromInteger x) 0 0
+  signum v = dotmap (/(mag v)) v -- TODO: Proper way of implementing this function for vectors
+  abs    (Vector3D x' y' z') = Vector3D (sqrt $ (x'**2) + (y'**2) + (z'**2)) (0) (0)
 
 
 instance HasX (Vector3D f) f where

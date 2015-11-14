@@ -29,7 +29,8 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- API
 --------------------------------------------------------------------------------------------------------------------------------------------
-module Cartesian.Plane.Types where
+module Cartesian.Plane.Types (module Cartesian.Plane.Types,
+                              module Cartesian.Internal.Types) where
 
 
 
@@ -39,6 +40,8 @@ module Cartesian.Plane.Types where
 import Data.Complex
 import Control.Lens
 
+import Cartesian.Internal.Types
+
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
@@ -46,8 +49,6 @@ import Control.Lens
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 -- |
--- TODO: Anchors (eg. C, N, S, E W and combinations thereof, perhaps represented as relative Vectors)
-data BoundingBox f = BoundingBox { _centre :: Complex f, _size :: Complex f } deriving (Show)
 
 
 -- |

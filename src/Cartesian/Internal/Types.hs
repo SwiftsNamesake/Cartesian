@@ -51,6 +51,11 @@ module Cartesian.Internal.Types where
 -- TODO: Anchors (eg. C, N, S, E W and combinations thereof, perhaps represented as relative Vectors)
 data BoundingBox v = BoundingBox { centreOf :: v, sizeOf :: v }
 
+
+-- |
+data Line v = Line v v
+
+
 -- Classes ---------------------------------------------------------------------------------------------------------------------------------
 
 -- |

@@ -44,6 +44,7 @@ import Control.Lens
 import Language.Haskell.TH
 
 import Cartesian.Internal.Types
+import Cartesian.Internal.Core
 import Cartesian.Internal.Utils
 
 
@@ -120,26 +121,28 @@ depth = size.z
 -- So much boilerplate it makes me cry -----------------------------------------------------------------------------------------------------
 
 -- type SideLens = (Fractional f, HasX v f) => Lens (BoundingBox v) (BoundingBox v) f f
+type SideLens v f = Lens (BoundingBox v) (BoundingBox v) f f
 
-left :: (Fractional f, HasX v f) => Lens (BoundingBox v) (BoundingBox v) f f
+
+left :: (HasX v f, Fractional f) => SideLens v f
 left = side x (-)
 
 
-right :: (Fractional f, HasX v f) => Lens (BoundingBox v) (BoundingBox v) f f
+right :: (HasX v f, Fractional f) => SideLens v f
 right = side x (+)
 
 
-bottom :: (Fractional f, HasY v f) => Lens (BoundingBox v) (BoundingBox v) f f
+bottom :: (HasY v f, Fractional f) => SideLens v f
 bottom = side y (-)
 
 
-top :: (Fractional f, HasY v f) => Lens (BoundingBox v) (BoundingBox v) f f
+top :: (HasY v f, Fractional f) => SideLens v f
 top = side y (+)
 
 
-front :: (Fractional f, HasZ v f) => Lens (BoundingBox v) (BoundingBox v) f f
+front :: (HasZ v f, Fractional f) => SideLens v f
 front = side z (-)
 
 
-back :: (Fractional f, HasZ v f) => Lens (BoundingBox v) (BoundingBox v) f f
+back :: (HasZ v f, Fractional f) => SideLens v f
 back = side z (+)

@@ -36,31 +36,33 @@ import qualified Control.Lens as L
 
 -- import Southpaw.Utilities.Utilities (pairwise)
 
+import Cartesian.Internal.Types
+import Cartesian.Internal.Lenses
+import Cartesian.Internal.Core
+
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- Types
 --------------------------------------------------------------------------------------------------------------------------------------------
+
 --------------------------------------------------------------------------------------------------------------------------------------------
+
 -- |
 -- TODO: Rename (?)
-data Vector num = Vector num num deriving (Eq, Show) -- TODO: Constraints on argument types (cf. GADT) (?)
-
-
--- |
-data Line num = Line (Vector num) (Vector num)
+data Vector2D f = Vector f f deriving (Eq, Show) -- TODO: Constraints on argument types (cf. GADT) (?)
 
 
 -- |
 -- TODO: Rename (eg. 'Shape') (?)
-type Polygon num = [Vector num]
+type Polygon f = [Vector2D f]
 
 
 -- |
-data Linear num = Linear { intercept :: num, slope :: num }
-
+data Linear f = Linear { intercept :: f, slope :: f }
 
 --------------------------------------------------------------------------------------------------------------------------------------------
+
 -- |
 -- type Domain
 
@@ -69,10 +71,10 @@ data Linear num = Linear { intercept :: num, slope :: num }
 --
 -- TODO: Use epsilon (?)
 -- TODO: How to treat points that lie on an edge
-inside :: Num n => Polygon n -> Vector n -> Bool
-inside (p:olygon) (Vector x y) = undefined
+inside :: Num n => Polygon n -> Vector2D n -> Bool
+inside polygon (Vector2D x y) = undefined
   where
-    lines   = (p:olygon)++[p] -- Close the loop
+    lines   = polygon ++ [head polygon] -- Close the loop
     -- between (Line (Vector ax ay) (Vector bx by)) = _
 
 
@@ -80,6 +82,7 @@ inside (p:olygon) (Vector x y) = undefined
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- Instances
 --------------------------------------------------------------------------------------------------------------------------------------------
+
 -- | abs v * signum v == v
 instance (Floating a, Eq a) => Num (Vector a) where
   -- TODO: Helper method to reduce boilerplate for component-wise operations
@@ -96,29 +99,8 @@ instance (Floating a, Eq a) => Num (Vector a) where
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- Functions
 --------------------------------------------------------------------------------------------------------------------------------------------
--- Vector math ------------------------------------------------------------------------------------
--- | Performs component-wise operations
-dotwise :: (a -> b -> c) -> Vector a -> Vector b -> Vector c
-dotwise f (Vector x y) (Vector x' y') = Vector (f x x') (f y y')
 
-
--- | Dot product of two vectors
-dot :: Floating a => Vector a -> Vector a -> a
-dot (Vector x y) (Vector x' y') = (x * x') + (y * y') -- TODO: Refactor with Num instance (?)
-
-
--- | Euclidean distance between two points
-euclidean :: Floating a => Vector a -> Vector a -> a
-euclidean a b = sqrt $ dot a b
-
-
--- |
-magnitude :: (Floating a, Eq a) => Vector a -> a
-magnitude v = euclidean v v
-
-mag :: (Floating a, Eq a) => Vector a -> a
-mag = magnitude
-
+-- Vector math -----------------------------------------------------------------------------------------------------------------------------
 
 -- | Angle (in radians) between the positive X-axis and the vector
 argument :: (Floating a, Eq a) => Vector a -> a
@@ -134,9 +116,9 @@ arg = argument
 polar :: (Floating a, Eq a) => Vector a -> (a, a)
 polar v@(Vector x y) = (magnitude v, argument v)
 
+-- Geometry --------------------------------------------------------------------------------------------------------------------------------
 
--- Geometry ---------------------------------------------------------------------------------------
--- | Yields the point at which two finite lines intersect. The lines are defined inclusively by
+-- | Yields the intersection point of two finite lines. The lines are defined inclusively by
 --   their endpoints. The result is wrapped in a Maybe value to account for non-intersecting
 --   lines.
 --
@@ -152,17 +134,18 @@ intersect :: RealFrac n => Line n -> Line n -> Maybe (Vector n)
 intersect a b
   | (fst $ deltas a) == 0 = Just $ error "Not implemented"
   | (fst $ deltas b) == 0 = Just $ error "Not implemented"
-  | slope a == slope b = Nothing
-  | otherwise          = Nothing
-  where deltas (Line (Vector ax ay) (Vector bx by)) = (bx - ax, by - ay) -- TODO: Rename (eg. deltas) (?)
-        vertical (Line (Vector ax _) (Vector bx _)) =  ax == bx
-        slope line     = let (dx, dy) = deltas line in dy/dx
-        intercept line@(Line (Vector x y) _)
-          | vertical line = Nothing
-          | otherwise     = Just $ y - slope line * x
+  | slope a == slope b    = Nothing
+  | otherwise             = Nothing
+  where
+    deltas   (Line (Vector ax ay) (Vector bx by)) = (bx - ax, by - ay) -- TODO: Rename (eg. deltas) (?)
+    vertical (Line (Vector ax _) (Vector bx _))   =  ax == bx
+    slope line     = let (dx, dy) = deltas line in dy/dx
+    intercept line@(Line (Vector x y) _)
+      | vertical line = Nothing
+      | otherwise     = Just $ y - slope line * x
 
+-- Geometry --------------------------------------------------------------------------------------------------------------------------------
 
--- Geometry ---------------------------------------------------------------------------------------
 -- |
 -- inside :: (Num n, Ord n) => Triangle n -> Point n -> Bool
 -- inside _ _ = False
@@ -181,8 +164,9 @@ overlap :: Real a => (a, a) -> (a, a) -> Maybe (a, a)
 overlap a b
   | leftmost /= (α, β) = Just (β, γ) --
   | otherwise          = Nothing     --
-  where [α, β, γ, _] = sort [fst a, snd a, fst b, snd b] -- That's right.
-        leftmost     = minimumBy (comparing fst) [a, b]  --
+  where
+    [α, β, γ, _] = sort [fst a, snd a, fst b, snd b] -- That's right.
+    leftmost     = minimumBy (comparing fst) [a, b]  --
 
 
 -- |
@@ -197,13 +181,13 @@ overlap a b
 -- TODO: Rename (eg. toLinear, function) (?)
 --
 coefficients :: (Fractional a, Eq a) => Line a -> Maybe (a, a)
-coefficients (Line (Vector ax ay) (Vector bx by))
-  | ax == bx  = Nothing
-  | ay == ay  = Nothing
-  | otherwise = let slope' = (by - ay)/(bx - ax) in Just (slope', ay - slope'*ax)
+coefficients (Line (Vector ax ay) (Vector bx by)) = do
+	when (ax == bx) Nothing
+	when (ay == ay) Nothing
+  let slope' = (by - ay)/(bx - ax) in Just (slope', ay - slope'*ax)
 
+-- Linear functions ------------------------------------------------------------------------------------------------------------------------
 
--- Linear functions -------------------------------------------------------------------------------
 -- | Solves a linear equation for x (f(x) = g(x))
 -- TODO: Use Epsilon (?)
 solve :: (Fractional n, Eq n) => Linear n -> Linear n -> Maybe n

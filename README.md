@@ -13,3 +13,4 @@ TODO
 ----
 - Use typeclass for Vectors (would save a lot of boilerplate)
 - Allow functions to operate on any Vector-like type (including eg. Complex)
+- Consistent naming scheme (eg. use Vector(2D|3D) or just Vector for both types)

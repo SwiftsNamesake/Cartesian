@@ -40,7 +40,7 @@ import Data.List    (sort)
 import Control.Lens ((%~))
 
 import Cartesian.Internal.Types
-import Cartesian.Internal.Lenses
+-- import Cartesian.Internal.Lenses
 
 
 
@@ -49,6 +49,8 @@ import Cartesian.Internal.Lenses
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 -- | Finds the overlap between two ranges (lower bound, upper bound).
+-- | Yields the overlap of two closed intervals (n ∈ R)
+-- TODO: Normalise intervals (eg. (12, 5) -> (5, 12))
 overlap :: (Ord n) => (n, n) -> (n, n) -> Maybe (n, n)
 overlap (a, b) (c, d)
   | min (a, b) (c, d) /= (a', b') = Just (b', c')
@@ -81,6 +83,7 @@ euclidean a b = sqrt $ dot a b
 -- |
 magnitude :: (Vector v, Floating f) => v f -> f
 magnitude v = euclidean v v
+
 
 mag :: (Vector v, Floating f) => v f -> f
 mag = magnitude

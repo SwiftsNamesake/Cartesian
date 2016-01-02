@@ -58,6 +58,8 @@ import Cartesian.Plane.Lenses
 
 -- Convenience constructors ----------------------------------------------------------------------------------------------------------------
 
+-- TODO: Generalise constructors, move to Internal.Core
+
 -- |
 -- TODO: Better name (?)
 -- TODO: Don't make assumptions about WHICH corners they are (✓)

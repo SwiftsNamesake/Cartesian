@@ -24,7 +24,7 @@
 {-# LANGUAGE TemplateHaskell        #-}
 {-# LANGUAGE MultiParamTypeClasses  #-}
 {-# LANGUAGE FunctionalDependencies #-}
-
+{-# LANGUAGE RankNTypes             #-}
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
@@ -37,13 +37,17 @@ module Cartesian.Internal.Types where
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
-
-
+import Control.Lens (Lens)
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- Types
 --------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Synonyms --------------------------------------------------------------------------------------------------------------------------------
+
+-- type SideLens = (Fractional f, HasX v f) => Lens (BoundingBox v) (BoundingBox v) f f
+type SideLens v f = Lens (BoundingBox v) (BoundingBox v) f f
 
 -- Types -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -53,34 +57,21 @@ data BoundingBox v = BoundingBox { centreOf :: v, sizeOf :: v }
 
 
 -- |
+-- TODO: Use record (eg. from, to) (?)
 data Line v = Line v v
-
 
 -- Classes ---------------------------------------------------------------------------------------------------------------------------------
 
 -- |
 -- TODO: Use GADT instead (?)
 -- TODO: Reduce boilerplate, figure out deriving, choose interface carefully
+-- TODO: Figure out how to deal with parameter (fromScalar requires a Num constraint on f, maybe use 'subclass')
 class Vector v where
-  vfold :: (f' -> f  -> f')  -> f'  -> v f  -> f'
-  vzip  :: (f  -> f' -> f'') -> v f -> v f' -> v f''
+  fromScalar :: Num f => f -> v f
+  vfold :: Num f => (f' -> f  -> f')  -> f'  -> v f  -> f'
+  vzip  :: Num f => (f  -> f' -> f'') -> v f -> v f' -> v f''
 
 
--- |
-class HasX a f | a -> f where
-  getX :: a -> f
-  setX :: a -> f -> a
-
-
--- |
-class HasY a f | a -> f where
-  getY :: a -> f
-  setY :: a -> f -> a
-
-
--- |
-class HasZ a f | a -> f where
-  getZ :: a -> f
-  setZ :: a -> f -> a
-
--- Instances -------------------------------------------------------------------------------------------------------------------------------
+class HasX a f | a -> f where { x :: Lens a a f f }
+class HasY a f | a -> f where { y :: Lens a a f f }
+class HasZ a f | a -> f where { z :: Lens a a f f }

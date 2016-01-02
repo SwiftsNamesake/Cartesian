@@ -21,7 +21,7 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- GHC Pragmas
 --------------------------------------------------------------------------------------------------------------------------------------------
-
+{-# LANGUAGE FlexibleInstances #-}
 
 
 
@@ -60,17 +60,17 @@ overlap (a, b) (c, d)
 -- Vectors ---------------------------------------------------------------------------------------------------------------------------------
 
 -- | Applies a function to each component in a vector
-dotmap :: Vector v => (a -> b) -> v a -> v b
+dotmap :: (Vector v, Num a) => (a -> b) -> v a -> v b
 dotmap f v = vzip (const . f) v v
 
 
 -- | Performs component-wise operations
-dotwise :: Vector v => (a -> b -> c) -> v a -> v b -> v c
-dotwise = vzip -- Hmmm. Dotwise isn't really a fold is it?
+dotwise :: (Vector v, Num a) => (a -> b -> c) -> v a -> v b -> v c
+dotwise = vzip
 
 
 -- | Dot product of two vectors
-dot :: (Vector v, Floating f) => v f -> v f -> f
+dot :: (Vector v, Num f) => v f -> v f -> f
 dot a b = vfold (+) 0 $ dotwise (*) a b
 -- dot (Vector x y z) (Vector x' y' z') = (x * x') + (y * y') + (z * z') -- TODO: Refactor with Num instance (?)
 
@@ -85,9 +85,23 @@ magnitude :: (Vector v, Floating f) => v f -> f
 magnitude v = euclidean v v
 
 
+-- |
 mag :: (Vector v, Floating f) => v f -> f
 mag = magnitude
 
+-- Instances -------------------------------------------------------------------------------------------------------------------------------
+
+-- |
+instance (Vector v, Floating f) => Num (v f) where
+  -- TODO: Helper method to reduce boilerplate for component-wise operations
+  (+) = dotwise (+)       --
+  (-) = dotwise (-)       --
+  (*) a b     = undefined -- TODO: Is this really correct?
+  fromInteger = fromScalar . fromInteger             --
+  signum v    = dotmap (/mag v) v      -- TODO: Proper way of implementing this function for vectors
+  abs         = fromScalar . magnitude --
+
+--------------------------------------------------------------------------------------------------------------------------------------------
 
 -- | Angle (in radians) between the positive X-axis and the vector
 -- argument :: (Floating a, Eq a) => Vector a -> a

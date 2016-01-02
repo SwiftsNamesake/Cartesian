@@ -10,7 +10,7 @@
 
 -- Created October 31 2015
 
--- TODO | -
+-- TODO | - QuickCheck, performance
 --        -
 
 -- SPEC | -
@@ -21,9 +21,10 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- GHC Pragmas
 --------------------------------------------------------------------------------------------------------------------------------------------
-{-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE TemplateHaskell       #-}
-{-# LANGUAGE RankNTypes            #-}
+{-# LANGUAGE MultiParamTypeClasses  #-}
+{-# LANGUAGE FunctionalDependencies #-}
+{-# LANGUAGE TemplateHaskell        #-}
+{-# LANGUAGE RankNTypes             #-}
 
 
 
@@ -54,20 +55,6 @@ import Cartesian.Internal.Utils
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 -- Vector ----------------------------------------------------------------------------------------------------------------------------------
-
--- | Focus on the X component
-x :: HasX v f => Lens v v f f
-x = lens getX setX
-
-
--- | Focus on the Y component
-y :: HasY v f => Lens v v f f
-y = lens getY setY
-
-
--- | Focus on the Z component
-z :: HasZ v f => Lens v v f f
-z = lens getZ setZ
 
 -- BoundingBox -----------------------------------------------------------------------------------------------------------------------------
 
@@ -107,22 +94,18 @@ side axis towards = lens get set
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
-width :: (HasX v f) => Lens (BoundingBox v) (BoundingBox v) f f
+width :: (HasX v f) => SideLens v f
 width = size.x
 
 
-height :: (HasY v f) => Lens (BoundingBox v) (BoundingBox v) f f
+height :: (HasY v f) => SideLens v f
 height = size.y
 
 
-depth :: (HasZ v f) => Lens (BoundingBox v) (BoundingBox v) f f
+depth :: (HasZ v f) => SideLens v f
 depth = size.z
 
 -- So much boilerplate it makes me cry -----------------------------------------------------------------------------------------------------
-
--- type SideLens = (Fractional f, HasX v f) => Lens (BoundingBox v) (BoundingBox v) f f
-type SideLens v f = Lens (BoundingBox v) (BoundingBox v) f f
-
 
 left :: (HasX v f, Fractional f) => SideLens v f
 left = side x (-)

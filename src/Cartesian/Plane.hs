@@ -32,6 +32,7 @@ import Data.List (sort, minimumBy)
 import Data.Ord  (comparing)
 import Data.Complex hiding (magnitude)
 
+import           Control.Monad (when)
 import qualified Control.Lens as L
 
 -- import Southpaw.Utilities.Utilities (pairwise)
@@ -40,32 +41,14 @@ import Cartesian.Internal.Types
 import Cartesian.Internal.Lenses
 import Cartesian.Internal.Core
 
+import Cartesian.Space.Types
+import Cartesian.Plane.Types
 
 
---------------------------------------------------------------------------------------------------------------------------------------------
--- Types
---------------------------------------------------------------------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------------------------------------------------------------------
-
--- |
--- TODO: Rename (?)
-data Vector2D f = Vector f f deriving (Eq, Show) -- TODO: Constraints on argument types (cf. GADT) (?)
-
-
--- |
--- TODO: Rename (eg. 'Shape') (?)
-type Polygon f = [Vector2D f]
-
-
--- |
-data Linear f = Linear { intercept :: f, slope :: f }
 
 --------------------------------------------------------------------------------------------------------------------------------------------
-
--- |
--- type Domain
-
+-- Functions
+--------------------------------------------------------------------------------------------------------------------------------------------
 
 -- | Determines if a point lies within a polygon using the odd-even method.
 --
@@ -83,16 +66,31 @@ inside polygon (Vector2D x y) = undefined
 -- Instances
 --------------------------------------------------------------------------------------------------------------------------------------------
 
--- | abs v * signum v == v
-instance (Floating a, Eq a) => Num (Vector a) where
-  -- TODO: Helper method to reduce boilerplate for component-wise operations
-  (+) = dotwise (+)
-  (-) = dotwise (-)
-  (*) = dotwise (*) -- TODO: Is this really correct?
-  fromInteger n = Vector (fromInteger n) 0
-  signum (Vector 0 0) = Vector 0 0
-  signum v@(Vector x y) = Vector (x/mag v) (y/mag v)
-  abs a  = Vector (euclidean a a) 0
+-- |
+-- instance Convertible (Vector2D f, Vector3D f) where
+  -- _
+
+
+-- |
+to3D :: Num f => Vector2D f -> Vector3D f
+to3D (Vector2D x' y') = Vector3D x' y' 0
+
+
+-- |
+from3D :: Num f => Vector3D f -> Vector2D f
+from3D (Vector3D x' y' _) = Vector2D x' y'
+
+
+-- | Perform some unary operation on a 2D vector as a 3D vector, converting the result back to 2D by discarding the z component.
+-- TODO: Rename (?)
+-- TODO: Loosen Num restriction (eg. to anything with a 'zero' value) (?)
+in3D :: (Num f, Num f') => (Vector3D f -> Vector3D f') -> Vector2D f -> Vector2D f'
+in3D f = from3D . f . to3D
+
+
+-- | Same as in3D, but for binary operations.
+-- _ :: _
+-- _
 
 
 
@@ -103,18 +101,18 @@ instance (Floating a, Eq a) => Num (Vector a) where
 -- Vector math -----------------------------------------------------------------------------------------------------------------------------
 
 -- | Angle (in radians) between the positive X-axis and the vector
-argument :: (Floating a, Eq a) => Vector a -> a
-argument (Vector 0 0) = 0
-argument (Vector x y) = atan $ y/x
-
-
-arg :: (Floating a, Eq a) => Vector a -> a
-arg = argument
-
-
--- | Vector -> (magnitude, argument)
-polar :: (Floating a, Eq a) => Vector a -> (a, a)
-polar v@(Vector x y) = (magnitude v, argument v)
+-- argument :: (Floating a, Eq a) => Vector a -> a
+-- argument (Vector 0 0) = 0
+-- argument (Vector x y) = atan $ y/x
+--
+--
+-- arg :: (Floating a, Eq a) => Vector a -> a
+-- arg = argument
+--
+--
+-- -- | Vector -> (magnitude, argument)
+-- polar :: (Floating a, Eq a) => Vector a -> (a, a)
+-- polar v@(Vector x y) = (magnitude v, argument v)
 
 -- Geometry --------------------------------------------------------------------------------------------------------------------------------
 
@@ -130,19 +128,19 @@ polar v@(Vector x y) = (magnitude v, argument v)
 -- TODO: Intersect for curves (functions) and single points (?)
 -- TODO: Polymorphic, typeclass (lines, shapes, ranges, etc.) (?)
 --
-intersect :: RealFrac n => Line n -> Line n -> Maybe (Vector n)
-intersect a b
-  | (fst $ deltas a) == 0 = Just $ error "Not implemented"
-  | (fst $ deltas b) == 0 = Just $ error "Not implemented"
-  | slope a == slope b    = Nothing
-  | otherwise             = Nothing
-  where
-    deltas   (Line (Vector ax ay) (Vector bx by)) = (bx - ax, by - ay) -- TODO: Rename (eg. deltas) (?)
-    vertical (Line (Vector ax _) (Vector bx _))   =  ax == bx
-    slope line     = let (dx, dy) = deltas line in dy/dx
-    intercept line@(Line (Vector x y) _)
-      | vertical line = Nothing
-      | otherwise     = Just $ y - slope line * x
+-- intersect :: RealFrac n => Line n -> Line n -> Maybe (Vector n)
+-- intersect a b
+--   | (fst $ deltas a) == 0 = Just $ error "Not implemented"
+--   | (fst $ deltas b) == 0 = Just $ error "Not implemented"
+--   | slope a == slope b    = Nothing
+--   | otherwise             = Nothing
+--   where
+--     deltas   (Line (Vector ax ay) (Vector bx by)) = (bx - ax, by - ay) -- TODO: Rename (eg. deltas) (?)
+--     vertical (Line (Vector ax _) (Vector bx _))   =  ax == bx
+--     slope line     = let (dx, dy) = deltas line in dy/dx
+--     intercept line@(Line (Vector x y) _)
+--       | vertical line = Nothing
+--       | otherwise     = Just $ y - slope line * x
 
 -- Geometry --------------------------------------------------------------------------------------------------------------------------------
 
@@ -152,21 +150,21 @@ intersect a b
 
 
 -- |
-intersects :: RealFrac r => Line r -> Line r -> Bool
-intersects a b = case intersect a b of
-  Just _  -> True
-  Nothing -> False
+-- intersects :: RealFrac r => Line r -> Line r -> Bool
+-- intersects a b = case intersect a b of
+--   Just _  -> True
+--   Nothing -> False
 
 
--- | Yields the overlap of two closed intervals (n ∈ R)
--- TODO: Normalise intervals (eg. (12, 5) -> (5, 12))
-overlap :: Real a => (a, a) -> (a, a) -> Maybe (a, a)
-overlap a b
-  | leftmost /= (α, β) = Just (β, γ) --
-  | otherwise          = Nothing     --
-  where
-    [α, β, γ, _] = sort [fst a, snd a, fst b, snd b] -- That's right.
-    leftmost     = minimumBy (comparing fst) [a, b]  --
+-- -- | Yields the overlap of two closed intervals (n ∈ R)
+-- -- TODO: Normalise intervals (eg. (12, 5) -> (5, 12))
+-- overlap :: Real a => (a, a) -> (a, a) -> Maybe (a, a)
+-- overlap a b
+--   | leftmost /= (α, β) = Just (β, γ) --
+--   | otherwise          = Nothing     --
+--   where
+--     [α, β, γ, _] = sort [fst a, snd a, fst b, snd b] -- That's right.
+--     leftmost     = minimumBy (comparing fst) [a, b]  --
 
 
 -- |
@@ -180,17 +178,17 @@ overlap a b
 -- TODO: Use Maybe (?)
 -- TODO: Rename (eg. toLinear, function) (?)
 --
-coefficients :: (Fractional a, Eq a) => Line a -> Maybe (a, a)
-coefficients (Line (Vector ax ay) (Vector bx by)) = do
-	when (ax == bx) Nothing
-	when (ay == ay) Nothing
-  let slope' = (by - ay)/(bx - ax) in Just (slope', ay - slope'*ax)
+-- coefficients :: (Fractional a, Eq a) => Line a -> Maybe (a, a)
+-- coefficients (Line (Vector ax ay) (Vector bx by)) = do
+-- 	when (ax == bx) Nothing
+-- 	when (ay == ay) Nothing
+-- 	let slope' = (by - ay)/(bx - ax) in Just (slope', ay - slope'*ax)
 
 -- Linear functions ------------------------------------------------------------------------------------------------------------------------
 
 -- | Solves a linear equation for x (f(x) = g(x))
 -- TODO: Use Epsilon (?)
-solve :: (Fractional n, Eq n) => Linear n -> Linear n -> Maybe n
-solve f g
-  | slope f == slope g = Nothing
-  | otherwise          = Just $ (intercept f - intercept g)/(slope f - slope g)
+-- solve :: (Fractional n, Eq n) => Linear n -> Linear n -> Maybe n
+-- solve f g
+--   | slope f == slope g = Nothing
+--   | otherwise          = Just $ (intercept f - intercept g)/(slope f - slope g)

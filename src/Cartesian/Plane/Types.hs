@@ -41,6 +41,7 @@ import Data.Complex
 import Control.Lens
 
 import Cartesian.Internal.Types
+import Cartesian.Space.Types
 
 
 
@@ -48,6 +49,22 @@ import Cartesian.Internal.Types
 -- Types
 --------------------------------------------------------------------------------------------------------------------------------------------
 
+-- |
+-- type Domain
+
+
+-- |
+-- TODO: Rename (?)
+data Vector2D f = Vector2D f f deriving (Eq, Show) -- TODO: Constraints on argument types (cf. GADT) (?)
+
+
+-- |
+-- TODO: Rename (eg. 'Shape') (?)
+type Polygon f = [Vector2D f]
+
+
+-- |
+data Linear f = Linear { intercept :: f, slope :: f }
 -- |
 
 

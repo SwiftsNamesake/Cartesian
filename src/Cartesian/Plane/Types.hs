@@ -21,8 +21,10 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- GHC Directives
 --------------------------------------------------------------------------------------------------------------------------------------------
-{-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE RankNTypes      #-}
+{-# LANGUAGE TemplateHaskell       #-}
+{-# LANGUAGE RankNTypes            #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE FlexibleInstances     #-}
 
 
 

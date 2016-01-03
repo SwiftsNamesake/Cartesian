@@ -81,7 +81,6 @@ instance Vector Vector3D where
 instance HasX (Vector3D f) f where
   x = lens (\(Vector3D x' _ _) -> x') (\(Vector3D _ y' z') x' -> Vector3D x' y' z')
 
-
 instance HasY (Vector3D f) f where
   y = lens (\(Vector3D _ y' _) -> y') (\(Vector3D x' _ z') y' -> Vector3D x' y' z')
 

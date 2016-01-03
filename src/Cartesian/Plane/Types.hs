@@ -65,9 +65,18 @@ type Polygon f = [Vector2D f]
 
 -- |
 data Linear f = Linear { intercept :: f, slope :: f }
--- |
 
 
 -- |
 -- TODO: Use existing type instead (?)
 -- data Side = SideLeft | SideRight | SideTop | SideBottom
+
+
+instance HasX (Vector2D f) f where
+  x = lens (\(Vector2D x' _) -> x') (\(Vector2D _ y') x' -> Vector2D x' y')
+
+instance HasY (Vector2D f) f where
+  y = lens (\(Vector2D _ y') -> y') (\(Vector2D x' _) y' -> Vector2D x' y')
+
+-- instance HasZ (Vector2D f) f where
+  -- z = lens (const 0) const

@@ -21,7 +21,9 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- API
 --------------------------------------------------------------------------------------------------------------------------------------------
-module Cartesian.Plane where
+module Cartesian.Plane (module Cartesian.Plane,
+                        module Cartesian.Plane.Types,
+                        magnitude) where
 
 
 
@@ -33,6 +35,7 @@ import Data.Ord  (comparing)
 import Data.Complex hiding (magnitude)
 
 import           Control.Monad (when)
+import           Control.Applicative
 import qualified Control.Lens as L
 
 -- import Southpaw.Utilities.Utilities (pairwise)
@@ -60,11 +63,6 @@ inside polygon (Vector2D x y) = undefined
     lines   = polygon ++ [head polygon] -- Close the loop
     -- between (Line (Vector ax ay) (Vector bx by)) = _
 
-
-
---------------------------------------------------------------------------------------------------------------------------------------------
--- Instances
---------------------------------------------------------------------------------------------------------------------------------------------
 
 -- |
 -- instance Convertible (Vector2D f, Vector3D f) where
@@ -128,19 +126,97 @@ in3D f = from3D . f . to3D
 -- TODO: Intersect for curves (functions) and single points (?)
 -- TODO: Polymorphic, typeclass (lines, shapes, ranges, etc.) (?)
 --
--- intersect :: RealFrac n => Line n -> Line n -> Maybe (Vector n)
--- intersect a b
---   | (fst $ deltas a) == 0 = Just $ error "Not implemented"
---   | (fst $ deltas b) == 0 = Just $ error "Not implemented"
---   | slope a == slope b    = Nothing
---   | otherwise             = Nothing
+-- TODO: I'm pretty sure I've finished this function and then misplaced it...
+-- intersect :: RealFrac n => Line n -> Line n -> Maybe (Vector2D n)
+-- intersect a b = do
+--   when ((fst $ deltas a) == 0) $ Just (error "Not implemented")
+--   when ((fst $ deltas b) == 0) $ Just (error "Not implemented")
+--   when (slope a == slope b)    $ Nothing
+--   let Just $ Vector2D () ()
 --   where
---     deltas   (Line (Vector ax ay) (Vector bx by)) = (bx - ax, by - ay) -- TODO: Rename (eg. deltas) (?)
---     vertical (Line (Vector ax _) (Vector bx _))   =  ax == bx
+--     deltas   (Line (Vector2D ax ay) (Vector2D bx by)) = (bx - ax, by - ay) -- TODO: Rename (eg. deltas) (?)
+--     vertical (Line (Vector2D ax _) (Vector2D bx _))   =  ax == bx
 --     slope line     = let (dx, dy) = deltas line in dy/dx
 --     intercept line@(Line (Vector x y) _)
 --       | vertical line = Nothing
 --       | otherwise     = Just $ y - slope line * x
+
+-- Linear functions ------------------------------------------------------------------------------------------------------------------------
+
+-- |
+-- TODO: Refactor
+-- TODO: Invariants, check corner cases
+-- TODO: Deal with vertical lines
+-- TODO: Factor out infinite-line logic
+-- TODO: Decide how to deal with identical lines
+-- TODO: Factor out domain logic (eg. write restrict or domain function)
+-- TODO: Visual debugging functions
+intersect :: RealFloat f => Line f -> Line f -> Maybe (Complex f)
+intersect f' g' = do
+  p <- mp
+  indomain f' p
+  indomain g' p
+  where
+    indomain h' = restrict (h'^.linebegin) (h'^.linestop)
+    mp = case [linear f', linear g'] of
+      [Just f, Nothing] -> let x = g'^.linebegin.real in Just $ (x):+(plotpoint f x)
+      [Nothing, Just g] -> let x = f'^.linebegin.real in Just $ (x):+(plotpoint g x)
+      [Just f,  Just g] -> linearIntersect f g
+      _                 -> Nothing
+
+
+-- | Gives the linear function overlapping the given segment
+linear :: RealFloat f => Line f -> Maybe (Linear f)
+linear line = (,) <$> slope line <*> intercept line
+
+
+-- | Applies a linear function to the given value
+-- TODO: Rename (?)
+plotpoint :: RealFloat f => Linear f -> f -> f
+plotpoint (slope', intercept') x = slope'*x + intercept'
+
+
+-- | Finds the intersection (if any) of two linear functions
+linearIntersect :: RealFloat f => Linear f -> Linear f -> Maybe (Complex f)
+linearIntersect (kf, mf) (kg, mg)
+  | kf == kg  = Nothing
+  | otherwise = let x = (mg-mf)/(kg-kg)
+                    y = (mf*x + kf)
+                in Just $ x:+y
+
+
+-- |
+slope :: RealFloat f => Line f -> Maybe f
+slope (Line fr to)
+  | dx == 0   = Nothing
+  | otherwise = Just $ dy/dx
+  where
+    (dx:+dy) = to - fr
+
+
+-- |
+intercept :: Line f -> Maybe f
+intercept (Line a b) = error ""
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+-- |
+between :: Ord a => a -> a -> a -> Bool
+between mini maxi a = mini <= a && a <= maxi
+
+
+-- | Ensures that a given point lies within the domain and codomain
+-- TODO: Let this function work on scalars, write another function for domain and codomain (?)
+-- restrict domain codomain p = _
+restrict :: Ord f => Complex f -> Complex f -> Complex f -> Maybe (Complex f)
+restrict a b p@(x:+y)
+  | indomain && incodomain = Just p
+  | otherwise              = Nothing
+  where
+    (lowx:+lowy)   = dotwise min a b
+    (highx:+highy) = dotwise max a b
+    indomain       = between lowx highx x
+    incodomain     = between lowy highy y
 
 -- Geometry --------------------------------------------------------------------------------------------------------------------------------
 

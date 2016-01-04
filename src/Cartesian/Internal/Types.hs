@@ -46,6 +46,7 @@ import Control.Lens (Lens)
 
 -- Synonyms --------------------------------------------------------------------------------------------------------------------------------
 
+-- |
 -- type SideLens = (Fractional f, HasX v f) => Lens (BoundingBox v) (BoundingBox v) f f
 type SideLens v f = Lens (BoundingBox v) (BoundingBox v) f f
 

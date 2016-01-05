@@ -92,6 +92,16 @@ side axis towards = lens get set
                      centre' = box^.centre.axis --
                  in BoundingBox { sizeOf=(box^.size) & axis .~ newsize, centreOf=(box^.centre) & axis .~ (to `towards` negate (newsize*0.5)) } -- TODO: Refactor. And then refactor some more.
 
+-- Lines -----------------------------------------------------------------------------------------------------------------------------------
+
+-- TODO: Use type class (?)
+
+begin :: Lens (Line v) (Line v) v v
+begin = lens (\(Line a _) -> a) (\(Line _ b) a -> Line a b)
+
+end :: Lens (Line v) (Line v) v v
+end = lens (\(Line _ b) -> b) (\(Line a _) b -> Line a b)
+
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 width :: (HasX v f) => SideLens v f

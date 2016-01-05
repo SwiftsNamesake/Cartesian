@@ -69,8 +69,8 @@ data Line v = Line v v
 -- TODO: Figure out how to deal with parameter (fromScalar requires a Num constraint on f, maybe use 'subclass')
 class Vector v where
   fromScalar :: Num f => f -> v f
-  vfold :: Num f => (f' -> f  -> f')  -> f'  -> v f  -> f'
-  vzip  :: Num f => (f  -> f' -> f'') -> v f -> v f' -> v f''
+  vfold :: Num f => (f' -> f  -> f')  -> f'  -> v f  -> f'     -- TODO: What's with the Num constraint (not sure what I was thinking)
+  vzip  :: Num f => (f  -> f' -> f'') -> v f -> v f' -> v f''  -- TODO: What's with the Num constraint (not sure what I was thinking)
 
 
 class HasX a f | a -> f where { x :: Lens a a f f }

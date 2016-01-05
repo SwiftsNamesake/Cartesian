@@ -23,7 +23,7 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 module Cartesian.Plane (module Cartesian.Plane,
                         module Cartesian.Plane.Types,
-                        magnitude) where
+                        magnitude) where -- TODO: Why do I need to export 'intersect' specifically when I'm already exporting this entire module
 
 
 
@@ -36,6 +36,8 @@ import Data.Complex hiding (magnitude)
 
 import           Control.Monad (when)
 import           Control.Applicative
+
+import           Control.Lens ((^.))
 import qualified Control.Lens as L
 
 -- import Southpaw.Utilities.Utilities (pairwise)
@@ -151,52 +153,60 @@ in3D f = from3D . f . to3D
 -- TODO: Decide how to deal with identical lines
 -- TODO: Factor out domain logic (eg. write restrict or domain function)
 -- TODO: Visual debugging functions
-intersect :: RealFloat f => Line f -> Line f -> Maybe (Complex f)
+intersect :: RealFloat f => Line (Vector2D f) -> Line (Vector2D f) -> Maybe (Vector2D f)
 intersect f' g' = do
   p <- mp
   indomain f' p
   indomain g' p
   where
-    indomain h' = restrict (h'^.linebegin) (h'^.linestop)
+    -- indomain :: RealFloat f => Line (Vector2D f) -> Vector2D f -> Maybe (Vector2D f)
+    indomain h' = restrict (h'^.begin) (h'^.end)
+
+    -- mp :: Maybe (Vector2D f)
     mp = case [linear f', linear g'] of
-      [Just f, Nothing] -> let x = g'^.linebegin.real in Just $ (x):+(plotpoint f x)
-      [Nothing, Just g] -> let x = f'^.linebegin.real in Just $ (x):+(plotpoint g x)
+      [Just f, Nothing] -> let x' = g'^.begin.x in Just $ Vector2D (x') (plotpoint f x')
+      [Nothing, Just g] -> let x' = f'^.begin.x in Just $ Vector2D (x') (plotpoint g x')
       [Just f,  Just g] -> linearIntersect f g
       _                 -> Nothing
 
 
 -- | Gives the linear function overlapping the given segment
-linear :: RealFloat f => Line f -> Maybe (Linear f)
-linear line = (,) <$> slope line <*> intercept line
+linear :: RealFloat f => Line (Vector2D f) -> Maybe (Linear f)
+linear line = Linear <$> intercept line <*> slope line
 
 
 -- | Applies a linear function to the given value
 -- TODO: Rename (?)
 plotpoint :: RealFloat f => Linear f -> f -> f
-plotpoint (slope', intercept') x = slope'*x + intercept'
+plotpoint f x = slopeOf f*x + interceptOf f
 
 
 -- | Finds the intersection (if any) of two linear functions
-linearIntersect :: RealFloat f => Linear f -> Linear f -> Maybe (Complex f)
-linearIntersect (kf, mf) (kg, mg)
-  | kf == kg  = Nothing
-  | otherwise = let x = (mg-mf)/(kg-kg)
-                    y = (mf*x + kf)
-                in Just $ x:+y
+linearIntersect :: RealFloat f => Linear f -> Linear f -> Maybe (Vector2D f)
+linearIntersect f g
+  | slopeOf f == slopeOf g  = Nothing
+  | otherwise = let x = (a-α)/(β-b) in Just $ Vector2D x (a*x + b)
+  where
+    [a, α] = map interceptOf [f, g]
+    [b, β] = map slopeOf [f, g]
 
 
 -- |
-slope :: RealFloat f => Line f -> Maybe f
+slope :: RealFloat f => Line (Vector2D f) -> Maybe f
 slope (Line fr to)
   | dx == 0   = Nothing
   | otherwise = Just $ dy/dx
   where
-    (dx:+dy) = to - fr
+    (Vector2D dx dy) = to - fr
 
 
 -- |
-intercept :: Line f -> Maybe f
-intercept (Line a b) = error ""
+intercept :: RealFloat f => Line (Vector2D f) -> Maybe f
+intercept line = do
+  slope' <- slope line
+  return $ y' - slope'*x'
+  where
+    (x', y') = (line^.begin.x, line^.begin.y)
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -208,15 +218,15 @@ between mini maxi a = mini <= a && a <= maxi
 -- | Ensures that a given point lies within the domain and codomain
 -- TODO: Let this function work on scalars, write another function for domain and codomain (?)
 -- restrict domain codomain p = _
-restrict :: Ord f => Complex f -> Complex f -> Complex f -> Maybe (Complex f)
-restrict a b p@(x:+y)
+restrict :: (Num f, Ord f) => Vector2D f -> Vector2D f -> Vector2D f -> Maybe (Vector2D f)
+restrict a b p@(Vector2D x y)
   | indomain && incodomain = Just p
   | otherwise              = Nothing
   where
-    (lowx:+lowy)   = dotwise min a b
-    (highx:+highy) = dotwise max a b
-    indomain       = between lowx highx x
-    incodomain     = between lowy highy y
+    (Vector2D lowx lowy)   = dotwise min a b
+    (Vector2D highx highy) = dotwise max a b
+    indomain   = between lowx highx x
+    incodomain = between lowy highy y
 
 -- Geometry --------------------------------------------------------------------------------------------------------------------------------
 

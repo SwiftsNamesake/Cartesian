@@ -66,7 +66,7 @@ type Polygon f = [Vector2D f]
 
 
 -- |
-data Linear f = Linear { intercept :: f, slope :: f }
+data Linear f = Linear { interceptOf :: f, slopeOf :: f }
 
 
 -- |

@@ -26,7 +26,8 @@
 
 
 
-module Cartesian.Space where
+module Cartesian.Space (module Cartesian.Space.Types,
+                        module Cartesian.Space) where
 
 
 
@@ -36,6 +37,7 @@ module Cartesian.Space where
 import Data.List (sort, minimumBy)
 import Data.Ord  (comparing)
 
+import Cartesian.Internal.Types
 import Cartesian.Space.Types
 
 

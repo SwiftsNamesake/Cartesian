@@ -23,7 +23,7 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 module Cartesian.Plane (module Cartesian.Plane,
                         module Cartesian.Plane.Types,
-                        magnitude) where -- TODO: Why do I need to export 'intersect' specifically when I'm already exporting this entire module
+                        magnitude, dotmap) where -- TODO: Why do I need to export 'intersect' specifically when I'm already exporting this entire module
 
 
 
@@ -180,15 +180,19 @@ linear line = Linear <$> intercept line <*> slope line
 plotpoint :: RealFloat f => Linear f -> f -> f
 plotpoint f x = slopeOf f*x + interceptOf f
 
+-- ax + b = αx + β
+-- ax - αx = β - b
+-- (a - α)x = (β - b)
+-- x = (β - b)/(a - α)
 
 -- | Finds the intersection (if any) of two linear functions
 linearIntersect :: RealFloat f => Linear f -> Linear f -> Maybe (Vector2D f)
 linearIntersect f g
   | slopeOf f == slopeOf g  = Nothing
-  | otherwise = let x = (a-α)/(β-b) in Just $ Vector2D x (a*x + b)
+  | otherwise = let x = (β-b)/(a-α) in Just $ Vector2D x (a*x + b)
   where
-    [a, α] = map interceptOf [f, g]
-    [b, β] = map slopeOf [f, g]
+    [a, α] = map slopeOf     [f, g]
+    [b, β] = map interceptOf [f, g]
 
 
 -- |
@@ -211,6 +215,7 @@ intercept line = do
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 -- |
+-- TODO: Type for distinguishing inclusive and exclusive values
 between :: Ord a => a -> a -> a -> Bool
 between mini maxi a = mini <= a && a <= maxi
 

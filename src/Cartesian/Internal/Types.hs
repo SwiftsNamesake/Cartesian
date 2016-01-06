@@ -55,12 +55,12 @@ type SideLens v f = Lens (BoundingBox v) (BoundingBox v) f f
 
 -- |
 -- TODO: Anchors (eg. C, N, S, E W and combinations thereof, perhaps represented as relative Vectors)
-data BoundingBox v = BoundingBox { centreOf :: v, sizeOf :: v }
+data BoundingBox v = BoundingBox { centreOf :: v, sizeOf :: v } deriving (Show, Eq)
 
 
 -- |
 -- TODO: Use record (eg. from, to) (?)
-data Line v = Line v v
+data Line v = Line v v deriving (Show, Eq)
 
 -- Classes ---------------------------------------------------------------------------------------------------------------------------------
 

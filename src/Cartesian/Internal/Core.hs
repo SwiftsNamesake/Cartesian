@@ -96,8 +96,11 @@ instance (Vector v, Floating f) => Num (v f) where
   -- TODO: Helper method to reduce boilerplate for component-wise operations
   (+) = dotwise (+)       --
   (-) = dotwise (-)       --
-  (*) a b     = undefined -- TODO: Is this really correct?
+  -- A × B = ||A|| ||B|| sin angle n.
+  -- (*) a b     = mag a * mag b -- TODO: Is this really correct?
+  (*) a b = error "Vector multiplication is still a work in progress."
   fromInteger = fromScalar . fromInteger             --
+  negate      = dotmap negate
   signum v    = dotmap (/mag v) v      -- TODO: Proper way of implementing this function for vectors
   abs         = fromScalar . magnitude --
 

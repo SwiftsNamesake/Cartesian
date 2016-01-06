@@ -52,7 +52,7 @@ import Cartesian.Internal.Core
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 -- |
-data Vector3D f = Vector3D f f f -- TODO: Constraints on argument types (cf. GADT) (?)
+data Vector3D f = Vector3D f f f deriving (Show, Eq) -- TODO: Constraints on argument types (cf. GADT) (?)
 
 -- Instances -------------------------------------------------------------------------------------------------------------------------------
 

@@ -39,6 +39,8 @@ module Cartesian.Space.Types (module Cartesian.Space.Types,
 --------------------------------------------------------------------------------------------------------------------------------------------
 import Control.Lens
 
+import Linear.V3
+
 import Cartesian.Internal.Types
 import Cartesian.Internal.Lenses
 import Cartesian.Internal.Core
@@ -74,6 +76,7 @@ instance Vector Vector3D where
 --   signum v = dotmap (/mag v) v -- TODO: Proper way of implementing this function for vectors
 --   abs    (Vector3D x' y' z') = Vector3D (sqrt $ (x'**2) + (y'**2) + (z'**2)) (0) (0)
 
+--------------------------------------------------------------------------------------------------------------------------------------------
 
 instance HasX (Vector3D f) f where
   x = lens (\(Vector3D x' _ _) -> x') (\(Vector3D _ y' z') x' -> Vector3D x' y' z')
@@ -83,3 +86,14 @@ instance HasY (Vector3D f) f where
 
 instance HasZ (Vector3D f) f where
   z = lens (\(Vector3D _ _ z') -> z') (\(Vector3D x' y' _) z' -> Vector3D x' y' z')
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+instance HasX (V3 f) f where
+  x = lens (\(V3 x' _ _) -> x') (\(V3 _ y' z') x' -> V3 x' y' z')
+
+instance HasY (V3 f) f where
+  y = lens (\(V3 _ y' _) -> y') (\(V3 x' _ z') y' -> V3 x' y' z')
+
+instance HasZ (V3 f) f where
+  z = lens (\(V3 _ _ z') -> z') (\(V3 x' y' _) z' -> V3 x' y' z')

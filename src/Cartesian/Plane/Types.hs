@@ -12,6 +12,8 @@
 
 -- TODO | - Rename or move out function definitions
 --        - Move BoundingBox functions to separate module (so that you could write BBox.makeFrom...)
+--        - Use V2 instead (would reduce boilerplate and the hassle of conversions)
+--        - Strictness annotations
 
 -- SPEC | -
 --        -
@@ -41,6 +43,8 @@ module Cartesian.Plane.Types (module Cartesian.Plane.Types,
 --------------------------------------------------------------------------------------------------------------------------------------------
 import Data.Complex
 import Control.Lens
+
+import Linear.V2
 
 import Cartesian.Internal.Types
 import Cartesian.Space.Types
@@ -82,7 +86,6 @@ instance Vector Vector2D where
   vfold f a (Vector2D x' y')                    = f (f a x') y'
   vzip  f   (Vector2D x' y') (Vector2D x'' y'') = Vector2D (f x' x'') (f y' y'')
 
-
 instance HasX (Vector2D f) f where
   x = lens
         (\(Vector2D x' _)     -> x')
@@ -93,5 +96,21 @@ instance HasY (Vector2D f) f where
         (\(Vector2D _  y')   -> y')
         (\(Vector2D x' _) y' -> Vector2D x' y')
 
--- instance HasZ (Vector2D f) f where
-  -- z = lens (const 0) const
+-- Instances -------------------------------------------------------------------------------------------------------------------------------
+
+-- |
+-- TODO: Refactor. A lot.
+instance Vector V2 where
+  fromScalar s = V2 s 0
+  vfold f a (V2 x' y')              = f (f a x') y'
+  vzip  f   (V2 x' y') (V2 x'' y'') = V2 (f x' x'') (f y' y'')
+
+instance HasX (V2 f) f where
+  x = lens
+        (\(V2 x' _)     -> x')
+        (\(V2 _  y') x' -> V2 x' y')
+
+instance HasY (V2 f) f where
+  y = lens
+        (\(V2 _  y')   -> y')
+        (\(V2 x' _) y' -> V2 x' y')

@@ -75,6 +75,11 @@ dot a b = vfold (+) 0 $ dotwise (*) a b
 -- dot (Vector x y z) (Vector x' y' z') = (x * x') + (y * y') + (z * z') -- TODO: Refactor with Num instance (?)
 
 
+-- | Cross product
+-- cross :: (Vector v, Num f) => v f -> v f -> v f
+-- cross a b = _
+
+
 -- | Euclidean distance between two points
 euclidean :: (Vector v, Floating f) => v f -> v f -> f
 euclidean a b = sqrt $ dot a b
@@ -106,35 +111,10 @@ instance (Vector v, Floating f) => Num (v f) where
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
--- | Angle (in radians) between the positive X-axis and the vector
--- argument :: (Floating a, Eq a) => Vector a -> a
--- argument (Vector 0 0 0) = 0
--- argument (Vector x y z) = atan $ y/x
-
-
--- arg :: (Floating a, Eq a) => Vector a -> a
--- arg = argument
-
-
 -- | Vector -> (magnitude, argument)
 -- polar :: (Floating a, Eq a) => Vector a -> (a, a)
 -- polar v@(Vector x y) = (magnitude v, argument v)
 
-
-
--- | Intersect
--- TODO: Math notes, MathJax or LaTex
--- TODO: Intersect for curves (functions) and single points (?)
--- TODO: Polymorphic, typeclass (lines, shapes, ranges, etc.) (?)
--- intersect :: Num a => Line a -> Line a -> Maybe (Vector a)
--- intersect _ _ = error "Not implemented" -- Nothing
---
---
--- -- |
--- intersects :: Num a => Line a -> Line a -> Bool
--- intersects a b = case intersect a b of
--- 	Just _  -> True
--- 	Nothing -> False
 --
 --
 -- -- | Yields the overlap of two closed intervals (n ∈ R)
@@ -145,20 +125,3 @@ instance (Vector v, Floating f) => Num (v f) where
 -- 	| otherwise                                  = Nothing --
 -- 	where [α, β, γ, _] = sort [fst a, snd a, fst b, snd b] -- That's right.
 -- 	      leftmost     = minimumBy (comparing fst) [a, b]  --
---
---
--- -- |
--- -- TODO: Intersect Rectangles
---
---
---
--- -- | Coefficients for the linear function of a Line (slope, intercept). The Z-component is ignored.
--- -- Fails for vertical and horizontal lines.
--- --
--- -- TODO: Use Maybe (?)
--- --
--- coefficients :: (Fractional a, Eq a) => Line a -> Maybe (a, a)
--- coefficients (Line (Vector ax ay _) (Vector bx by _))
--- 	| ax == bx  = Nothing
--- 	| ay == ay  = Nothing
--- 	| otherwise = let slope = (by - ay)/(bx - ax) in Just (slope, ay - slope*ax)

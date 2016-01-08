@@ -90,7 +90,8 @@ side axis towards = lens get set
     get = offset axis towards
     set box to = let newsize = abs (to - towards centre' (-(box^.size.axis)*0.5))
                      centre' = box^.centre.axis --
-                 in BoundingBox { sizeOf=(box^.size) & axis .~ newsize, centreOf=(box^.centre) & axis .~ (to `towards` negate (newsize*0.5)) } -- TODO: Refactor. And then refactor some more.
+                 in BoundingBox { sizeOf   = (box^.size)   & axis .~ newsize,
+                                  centreOf = (box^.centre) & axis .~ (to `towards` negate (newsize*0.5)) } -- TODO: Refactor. And then refactor some more.
 
 -- Lines -----------------------------------------------------------------------------------------------------------------------------------
 

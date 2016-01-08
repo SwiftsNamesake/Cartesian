@@ -23,7 +23,7 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 module Cartesian.Plane (module Cartesian.Plane,
                         module Cartesian.Plane.Types,
-                        magnitude, dotmap) where -- TODO: Why do I need to export 'intersect' specifically when I'm already exporting this entire module
+                        magnitude, dotmap) where
 
 
 
@@ -55,12 +55,14 @@ import Cartesian.Plane.Types
 -- Functions
 --------------------------------------------------------------------------------------------------------------------------------------------
 
+--------------------------------------------------------------------------------------------------------------------------------------------
+
 -- | Determines if a point lies within a polygon using the odd-even method.
 --
 -- TODO: Use epsilon (?)
 -- TODO: How to treat points that lie on an edge
 inside :: Num n => Polygon n -> Vector2D n -> Bool
-inside polygon (Vector2D x y) = undefined
+inside polygon (Vector2D x y) = error "Cartesian.Plane.inside is still a work in progress"
   where
     lines   = polygon ++ [head polygon] -- Close the loop
     -- between (Line (Vector ax ay) (Vector bx by)) = _
@@ -114,45 +116,24 @@ in3D f = from3D . f . to3D
 -- polar :: (Floating a, Eq a) => Vector a -> (a, a)
 -- polar v@(Vector x y) = (magnitude v, argument v)
 
--- Geometry --------------------------------------------------------------------------------------------------------------------------------
+-- Linear functions ------------------------------------------------------------------------------------------------------------------------
 
 -- | Yields the intersection point of two finite lines. The lines are defined inclusively by
 --   their endpoints. The result is wrapped in a Maybe value to account for non-intersecting
 --   lines.
---
--- TODO: Move equation solving to separate function (two linear functions)
--- TODO: Simplify logic by considering f(x) = y for vertical lines (?)
--- TODO: Return Either instead of Maybe (eg. Left "parallel") (?)
---
--- TODO: Math notes, MathJax or LaTex
--- TODO: Intersect for curves (functions) and single points (?)
--- TODO: Polymorphic, typeclass (lines, shapes, ranges, etc.) (?)
---
--- TODO: I'm pretty sure I've finished this function and then misplaced it...
--- intersect :: RealFrac n => Line n -> Line n -> Maybe (Vector2D n)
--- intersect a b = do
---   when ((fst $ deltas a) == 0) $ Just (error "Not implemented")
---   when ((fst $ deltas b) == 0) $ Just (error "Not implemented")
---   when (slope a == slope b)    $ Nothing
---   let Just $ Vector2D () ()
---   where
---     deltas   (Line (Vector2D ax ay) (Vector2D bx by)) = (bx - ax, by - ay) -- TODO: Rename (eg. deltas) (?)
---     vertical (Line (Vector2D ax _) (Vector2D bx _))   =  ax == bx
---     slope line     = let (dx, dy) = deltas line in dy/dx
---     intercept line@(Line (Vector x y) _)
---       | vertical line = Nothing
---       | otherwise     = Just $ y - slope line * x
-
--- Linear functions ------------------------------------------------------------------------------------------------------------------------
-
--- |
 -- TODO: Refactor
+-- TODO: Move equation solving to separate function (two linear functions)
 -- TODO: Invariants, check corner cases
 -- TODO: Deal with vertical lines
 -- TODO: Factor out infinite-line logic
 -- TODO: Decide how to deal with identical lines
 -- TODO: Factor out domain logic (eg. write restrict or domain function)
+-- TODO: Return Either instead of Maybe (eg. Left "parallel") (?)
 -- TODO: Visual debugging functions
+-- TODO: Math notes, MathJax or LaTex
+-- TODO: Intersect for curves (functions) and single points (?)
+-- TODO: Polymorphic, typeclass (lines, shapes, ranges, etc.) (?)
+-- TODO: Intersect Rectangles
 intersect :: RealFloat f => Line (Vector2D f) -> Line (Vector2D f) -> Maybe (Vector2D f)
 intersect f' g' = do
   p <- mp
@@ -170,7 +151,7 @@ intersect f' g' = do
       _                 -> Nothing
 
 
--- | Gives the linear function overlapping the given segment
+-- | Gives the linear function overlapping the given segment, or Nothing if there is no such function
 linear :: RealFloat f => Line (Vector2D f) -> Maybe (Linear f)
 linear line = Linear <$> intercept line <*> slope line
 
@@ -180,12 +161,10 @@ linear line = Linear <$> intercept line <*> slope line
 plotpoint :: RealFloat f => Linear f -> f -> f
 plotpoint f x = slopeOf f*x + interceptOf f
 
--- ax + b = αx + β
--- ax - αx = β - b
--- (a - α)x = (β - b)
--- x = (β - b)/(a - α)
 
 -- | Finds the intersection (if any) of two linear functions
+-- TODO: Use Epsilon (?)
+-- TODO: Rename (eg. 'solve') (?)
 linearIntersect :: RealFloat f => Linear f -> Linear f -> Maybe (Vector2D f)
 linearIntersect f g
   | slopeOf f == slopeOf g  = Nothing
@@ -232,54 +211,3 @@ restrict a b p@(Vector2D x y)
     (Vector2D highx highy) = dotwise max a b
     indomain   = between lowx highx x
     incodomain = between lowy highy y
-
--- Geometry --------------------------------------------------------------------------------------------------------------------------------
-
--- |
--- inside :: (Num n, Ord n) => Triangle n -> Point n -> Bool
--- inside _ _ = False
-
-
--- |
--- intersects :: RealFrac r => Line r -> Line r -> Bool
--- intersects a b = case intersect a b of
---   Just _  -> True
---   Nothing -> False
-
-
--- -- | Yields the overlap of two closed intervals (n ∈ R)
--- -- TODO: Normalise intervals (eg. (12, 5) -> (5, 12))
--- overlap :: Real a => (a, a) -> (a, a) -> Maybe (a, a)
--- overlap a b
---   | leftmost /= (α, β) = Just (β, γ) --
---   | otherwise          = Nothing     --
---   where
---     [α, β, γ, _] = sort [fst a, snd a, fst b, snd b] -- That's right.
---     leftmost     = minimumBy (comparing fst) [a, b]  --
-
-
--- |
--- TODO: Intersect Rectangles
-
-
-
--- | Coefficients for the linear function of a Line (slope, intercept).
--- Fails for vertical and horizontal lines.
---
--- TODO: Use Maybe (?)
--- TODO: Rename (eg. toLinear, function) (?)
---
--- coefficients :: (Fractional a, Eq a) => Line a -> Maybe (a, a)
--- coefficients (Line (Vector ax ay) (Vector bx by)) = do
--- 	when (ax == bx) Nothing
--- 	when (ay == ay) Nothing
--- 	let slope' = (by - ay)/(bx - ax) in Just (slope', ay - slope'*ax)
-
--- Linear functions ------------------------------------------------------------------------------------------------------------------------
-
--- | Solves a linear equation for x (f(x) = g(x))
--- TODO: Use Epsilon (?)
--- solve :: (Fractional n, Eq n) => Linear n -> Linear n -> Maybe n
--- solve f g
---   | slope f == slope g = Nothing
---   | otherwise          = Just $ (intercept f - intercept g)/(slope f - slope g)

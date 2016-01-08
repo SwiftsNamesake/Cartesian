@@ -62,6 +62,7 @@ library
   -- Other library packages from which modules are imported.
   build-depends:       base == 4.*,
                        lens <= 4.13.0.0,
+                       linear,
                        template-haskell
 
   -- Directories containing source files.

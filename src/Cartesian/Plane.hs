@@ -94,12 +94,6 @@ in3D f = from3D . f . to3D
 -- _ :: _
 -- _
 
-
-
---------------------------------------------------------------------------------------------------------------------------------------------
--- Functions
---------------------------------------------------------------------------------------------------------------------------------------------
-
 -- Vector math -----------------------------------------------------------------------------------------------------------------------------
 
 -- | Angle (in radians) between the positive X-axis and the vector
@@ -141,13 +135,13 @@ intersect f' g' = do
   indomain g' p
   where
     -- indomain :: RealFloat f => Line (Vector2D f) -> Vector2D f -> Maybe (Vector2D f)
-    indomain h' = restrict (h'^.begin) (h'^.end)
+    indomain h' = restrict (h'^.begin) (h'^.end) -- TODO: Rename
 
     -- mp :: Maybe (Vector2D f)
-    mp = case [linear f', linear g'] of
-      [Just f, Nothing] -> let x' = g'^.begin.x in Just $ Vector2D (x') (plotpoint f x')
-      [Nothing, Just g] -> let x' = f'^.begin.x in Just $ Vector2D (x') (plotpoint g x')
-      [Just f,  Just g] -> linearIntersect f g
+    mp = case (linear f', linear g') of
+      (Just f, Nothing) -> let x' = g'^.begin.x in Just . Vector2D x' $ plotpoint f x'
+      (Nothing, Just g) -> let x' = f'^.begin.x in Just . Vector2D x' $ plotpoint g x'
+      (Just f,  Just g) -> linearIntersect f g
       _                 -> Nothing
 
 
@@ -167,7 +161,7 @@ plotpoint f x = slopeOf f*x + interceptOf f
 -- TODO: Rename (eg. 'solve') (?)
 linearIntersect :: RealFloat f => Linear f -> Linear f -> Maybe (Vector2D f)
 linearIntersect f g
-  | slopeOf f == slopeOf g  = Nothing
+  | slopeOf f == slopeOf g = Nothing
   | otherwise = let x = (β-b)/(a-α) in Just $ Vector2D x (a*x + b)
   where
     [a, α] = map slopeOf     [f, g]
@@ -189,7 +183,7 @@ intercept line = do
   slope' <- slope line
   return $ y' - slope'*x'
   where
-    (x', y') = (line^.begin.x, line^.begin.y)
+    (Vector2D x' y') = line^.begin
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 

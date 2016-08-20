@@ -51,6 +51,7 @@ import Cartesian.Internal.Types
 -- | Finds the overlap between two ranges (lower bound, upper bound).
 -- | Yields the overlap of two closed intervals (n ∈ R)
 -- TODO: Normalise intervals (eg. (12, 5) -> (5, 12))
+-- TODO: Type for intervals (which would also encode the 'openness' of the lower and upper limits)
 overlap :: (Ord n) => (n, n) -> (n, n) -> Maybe (n, n)
 overlap (a, b) (c, d)
   | min (a, b) (c, d) /= (a', b') = Just (b', c')
@@ -99,14 +100,14 @@ mag = magnitude
 -- |
 instance (Vector v, Floating f) => Num (v f) where
   -- TODO: Helper method to reduce boilerplate for component-wise operations
-  (+) = dotwise (+)       --
-  (-) = dotwise (-)       --
+  (+) = dotwise (+) --
+  (-) = dotwise (-) --
   -- A × B = ||A|| ||B|| sin angle n.
   -- (*) a b     = mag a * mag b -- TODO: Is this really correct?
   (*) a b = error "Vector multiplication is still a work in progress."
   fromInteger = fromScalar . fromInteger             --
   negate      = dotmap negate
-  signum v    = dotmap (/mag v) v      -- TODO: Proper way of implementing this function for vectors
+  signum v    = dotmap signum v      -- TODO: Proper way of implementing this function for vectors
   abs         = fromScalar . magnitude --
 
 --------------------------------------------------------------------------------------------------------------------------------------------

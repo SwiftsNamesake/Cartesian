@@ -30,6 +30,8 @@
 -- API
 --------------------------------------------------------------------------------------------------------------------------------------------
 module Cartesian.Space.Types (module Cartesian.Space.Types,
+                              module Cartesian.Internal.Lenses,
+                              module Cartesian.Internal.Core,
                               BoundingBox(..)) where
 
 

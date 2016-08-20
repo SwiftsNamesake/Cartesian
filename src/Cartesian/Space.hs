@@ -27,7 +27,9 @@
 
 
 module Cartesian.Space (module Cartesian.Space.Types,
-                        module Cartesian.Space) where
+                        module Cartesian.Space,
+                        BoundingBox(..),
+                        Vector) where
 
 
 

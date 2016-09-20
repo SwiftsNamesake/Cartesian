@@ -30,8 +30,7 @@
 -- API
 --------------------------------------------------------------------------------------------------------------------------------------------
 module Cartesian.Space.Types (module Cartesian.Space.Types,
-                              module Cartesian.Internal.Lenses,
-                              module Cartesian.Internal.Core,
+                              Vector(..),
                               BoundingBox(..)) where
 
 
@@ -42,10 +41,11 @@ module Cartesian.Space.Types (module Cartesian.Space.Types,
 import Control.Lens
 
 import Linear.V3
+import Linear.V4
 
 import Cartesian.Internal.Types
-import Cartesian.Internal.Lenses
-import Cartesian.Internal.Core
+-- import Cartesian.Internal.Lenses
+-- import Cartesian.Internal.Core
 
 
 
@@ -80,6 +80,16 @@ instance Vector Vector3D where
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
+instance Functor Vector3D where
+  fmap f (Vector3D x y z) = Vector3D (f x) (f y) (f z)
+
+
+instance Applicative Vector3D where
+  pure a = Vector3D a a a
+  Vector3D f g h <*> Vector3D x y z = Vector3D (f x) (g y) (h z)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
 instance HasX (Vector3D f) f where
   x = lens (\(Vector3D x' _ _) -> x') (\(Vector3D _ y' z') x' -> Vector3D x' y' z')
 
@@ -99,3 +109,17 @@ instance HasY (V3 f) f where
 
 instance HasZ (V3 f) f where
   z = lens (\(V3 _ _ z') -> z') (\(V3 x' y' _) z' -> V3 x' y' z')
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+instance Vector V3 where
+  fromScalar s = V3 s 0 0
+  vfold f a (V3 x' y' z')                  = f (f (f a x') y') z'
+  vzip  f   (V3 x' y' z') (V3 x'' y'' z'') = V3 (f x' x'') (f y' y'') (f z' z'')
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+instance Vector V4 where
+  fromScalar s = V4 s 0 0 0
+  vfold f a (V4 x' y' z' w')                  = f (f (f (f a x') y') z') w'
+  vzip  f   (V4 x' y' z' w') (V4 x'' y'' z'' w'') = V4 (f x' x'') (f y' y'') (f z' z'') (f w' w'')

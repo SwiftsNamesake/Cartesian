@@ -11,7 +11,8 @@
 -- Created September 7 2015
 
 -- TODO | - Corner lenses
---        -
+--        - This shouldn't be a separate module
+--        - Use classes (eg. Foldable, Applicative) to implement generically (...)
 
 -- SPEC | -
 --        -
@@ -41,10 +42,12 @@ import Data.Functor ((<$>))
 import Data.List (sort)
 
 import Control.Lens
+import Control.Applicative ((<$>), (<*>))
 
 import Cartesian.Internal.Types
 import Cartesian.Internal.Lenses
-import Cartesian.Internal.Core
+import Cartesian.Internal.Instances
+-- import Cartesian.Internal.Core
 
 import Cartesian.Plane.Types
 import Cartesian.Plane.Lenses
@@ -60,27 +63,31 @@ import Cartesian.Plane.Lenses
 
 -- TODO: Generalise constructors, move to Internal.Core
 
--- |
+-- | Creates a bounding box from two opposite corners
 -- TODO: Better name (?)
 -- TODO: Don't make assumptions about WHICH corners they are (✓)
-fromCorners :: RealFloat f => Complex f -> Complex f -> BoundingBox f
-fromCorners nw@(n:+w) se@(s:+e) = let size = dotmap abs (se-nw) in BoundingBox { _centre=dotwise min nw se+size*(0.5:+0.0), _size=size }
-
-
--- | Creates a bounding box from a topleft and size vector.
-fromCornerAndSize :: RealFloat f => Complex f -> Complex f -> BoundingBox f
-fromCornerAndSize nw size' = BoundingBox { _centre=nw+size'*0.5, _size=size' }
+-- TODO: Should we care about degenerate cases (such as 'a' and 'b' being identical)
+fromCorners :: (Applicative v, Num n) => v n -> v n -> BoundingBox (v n)
+fromCorners a b = BoundingBox { cornerOf = min <$> a <*> b,
+                                sizeOf   = abs <$> liftA2 (-) b a }
 
 
 -- | Top Left Bottom Right
-fromSides :: RealFloat f => f -> f -> f -> f -> BoundingBox f
-fromSides top left bottom right = fromCorners (left:+top) (right:+bottom)
+-- fromSides :: RealFloat f => f -> f -> f -> f -> BoundingBox f
+-- fromSides top left bottom right = fromCorners (left:+top) (right:+bottom)
 
 -- Booleans --------------------------------------------------------------------------------------------------------------------------------
 
 -- |
-intersect :: (RealFloat f, Ord f) => BoundingBox f -> BoundingBox f -> Maybe (BoundingBox f)
+-- TODO: 
+intersect :: (Applicative v, Ord f) => BoundingBox (v f) -> BoundingBox (v f) -> Maybe (BoundingBox (v f))
 intersect a b = do
-  (left', right')  <- overlap (a^.left, a^.right)  (b^.left, b^.right)
-  (top',  bottom') <- overlap (a^.top,  a^.bottom) (b^.top,  b^.bottom)
-  return $ fromSides top' left' bottom' right'
+  overlaps <- uncurry overlap <$> (liftA2 (,) <*> (a^.axes) <*> (b^.axes))
+--   (left', right')  <- overlap (a^.left, a^.right)  (b^.left, b^.right)
+--   (top',  bottom') <- overlap (a^.top,  a^.bottom) (b^.top,  b^.bottom)
+--   return $ fromSides top' left' bottom' right'
+  where
+    axesOf box = zipA (box^.corner) (box^.size)
+    zipA       = liftA2 (,)
+    unzipA v   = (fst <$> v, snd <$> v)
+

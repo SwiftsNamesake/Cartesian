@@ -61,12 +61,12 @@ overlap (a, b) (c, d)
 -- Vectors ---------------------------------------------------------------------------------------------------------------------------------
 
 -- | Applies a function to each component in a vector
-dotmap :: (Vector v, Num a) => (a -> b) -> v a -> v b
+dotmap :: Vector v => (a -> b) -> v a -> v b
 dotmap f v = vzip (const . f) v v
 
 
 -- | Performs component-wise operations
-dotwise :: (Vector v, Num a) => (a -> b -> c) -> v a -> v b -> v c
+dotwise :: Vector v => (a -> b -> c) -> v a -> v b -> v c
 dotwise = vzip
 
 
@@ -94,21 +94,6 @@ magnitude v = euclidean v v
 -- |
 mag :: (Vector v, Floating f) => v f -> f
 mag = magnitude
-
--- Instances -------------------------------------------------------------------------------------------------------------------------------
-
--- |
-instance (Vector v, Floating f) => Num (v f) where
-  -- TODO: Helper method to reduce boilerplate for component-wise operations
-  (+) = dotwise (+) --
-  (-) = dotwise (-) --
-  -- A × B = ||A|| ||B|| sin angle n.
-  -- (*) a b     = mag a * mag b -- TODO: Is this really correct?
-  (*) a b = error "Vector multiplication is still a work in progress."
-  fromInteger = fromScalar . fromInteger             --
-  negate      = dotmap negate
-  signum v    = dotmap signum v      -- TODO: Proper way of implementing this function for vectors
-  abs         = fromScalar . magnitude --
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -30,20 +30,21 @@ module Cartesian.Plane (module Cartesian.Plane,
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
-import Data.List (sort, minimumBy)
-import Data.Ord  (comparing)
-import Data.Complex hiding (magnitude)
+-- import Data.List (sort, minimumBy)
+-- import Data.Ord  (comparing)
+-- import Data.Complex hiding (magnitude)
 
-import           Control.Monad (when)
+-- import           Control.Monad (when)
 import           Control.Applicative
 
 import           Control.Lens ((^.))
-import qualified Control.Lens as L
+-- import qualified Control.Lens as L
 
 -- import Southpaw.Utilities.Utilities (pairwise)
 
 import Cartesian.Internal.Types
-import Cartesian.Internal.Lenses
+-- import Cartesian.Internal.Instances
+import Cartesian.Internal.Lenses (begin, end)
 import Cartesian.Internal.Core
 
 import Cartesian.Space.Types
@@ -62,9 +63,9 @@ import Cartesian.Plane.Types
 -- TODO: Use epsilon (?)
 -- TODO: How to treat points that lie on an edge
 inside :: Num n => Polygon n -> Vector2D n -> Bool
-inside polygon (Vector2D x y) = error "Cartesian.Plane.inside is still a work in progress"
+inside polygon (Vector2D px py) = error "Cartesian.Plane.inside is still a work in progress"
   where
-    lines   = polygon ++ [head polygon] -- Close the loop
+    edges = polygon ++ [head polygon] -- Close the loop
     -- between (Line (Vector ax ay) (Vector bx by)) = _
 
 
@@ -174,7 +175,7 @@ slope (Line fr to)
   | dx == 0   = Nothing
   | otherwise = Just $ dy/dx
   where
-    (Vector2D dx dy) = to - fr
+    (Vector2D dx dy) = liftA2 (-) to fr
 
 
 -- |

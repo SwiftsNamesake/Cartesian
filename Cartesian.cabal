@@ -10,7 +10,7 @@ name:                Cartesian
 -- PVP summary:      +-+------- breaking API changes
 --                   | | +----- non-breaking API additions
 --                   | | | +--- code changes with no API change
-version:             0.3.0.0
+version:             0.4.0.0
 
 -- A short (one-line) description of the package.
 synopsis:            Coordinate systems
@@ -54,11 +54,23 @@ library
 
   -- Modules included in this library but not exported.
 
-  other-modules:       Cartesian.Internal.Types, Cartesian.Internal.Lenses, Cartesian.Internal.Core, Cartesian.Internal.Utils
+  other-modules:       Cartesian.Internal.Types, Cartesian.Internal.Instances, Cartesian.Internal.Lenses, Cartesian.Internal.Core, Cartesian.Internal.Utils
 
   -- LANGUAGE extensions used by modules in this package.
   other-extensions:    TemplateHaskell, RankNTypes, MultiParamTypeClasses, FlexibleInstances
 
+  --
+  ghc-options:         -fwarn-tabs
+                       -fwarn-unused-imports
+                       -fwarn-name-shadowing
+                       -fwarn-incomplete-uni-patterns
+                       -fwarn-incomplete-patterns
+                       -fwarn-overlapping-patterns
+                       -fwarn-incomplete-record-updates
+                       -fwarn-missing-signatures
+                       -fwarn-monomorphism-restriction
+                       -fwarn-orphans
+                       
   -- Other library packages from which modules are imported.
   build-depends:       base == 4.*,
                        lens <= 4.13.0.0,

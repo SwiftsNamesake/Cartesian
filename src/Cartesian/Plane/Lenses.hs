@@ -35,11 +35,11 @@ module Cartesian.Plane.Lenses where
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
-import Data.Complex
-import Data.Functor ((<$>))
-import Control.Lens
+-- import Data.Complex
+-- import Data.Functor ((<$>))
+-- import Control.Lens
 
-import Cartesian.Plane.Types
+-- import Cartesian.Plane.Types
 
 
 

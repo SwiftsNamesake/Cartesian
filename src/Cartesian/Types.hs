@@ -28,9 +28,7 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- API
 --------------------------------------------------------------------------------------------------------------------------------------------
-module Cartesian.Types (module Cartesian.Plane,
-                        module Cartesian.Space,
-                        module Cartesian.Plane.Types,
+module Cartesian.Types (module Cartesian.Plane.Types,
                         module Cartesian.Space.Types,
                         BoundingBox(..)) where
 
@@ -41,9 +39,6 @@ module Cartesian.Types (module Cartesian.Plane,
 --------------------------------------------------------------------------------------------------------------------------------------------
 import Cartesian.Plane.Types
 import Cartesian.Space.Types
-
-import Cartesian.Plane
-import Cartesian.Space
 
 
 

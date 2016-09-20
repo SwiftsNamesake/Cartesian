@@ -28,16 +28,15 @@
 
 module Cartesian.Space (module Cartesian.Space.Types,
                         module Cartesian.Space,
-                        BoundingBox(..),
-                        Vector) where
+                        BoundingBox(..)) where
 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
-import Data.List (sort, minimumBy)
-import Data.Ord  (comparing)
+-- import Data.List (sort, minimumBy)
+-- import Data.Ord  (comparing)
 
 import Cartesian.Internal.Types
 import Cartesian.Space.Types

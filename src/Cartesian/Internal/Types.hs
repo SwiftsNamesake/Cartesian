@@ -37,7 +37,7 @@ module Cartesian.Internal.Types where
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
-import Control.Lens (Lens)
+import Control.Lens (Simple, Lens)
 
 
 
@@ -47,16 +47,14 @@ import Control.Lens (Lens)
 
 -- Synonyms --------------------------------------------------------------------------------------------------------------------------------
 
--- |
--- type SideLens = (Fractional f, HasX v f) => Lens (BoundingBox v) (BoundingBox v) f f
-type SideLens v f = Lens (BoundingBox v) (BoundingBox v) f f
+-- | A lens focusing on a single [vector-]component in a BoundingBox
+type BoxLens v f = Simple Lens (BoundingBox (v f)) f
 
 -- Types -----------------------------------------------------------------------------------------------------------------------------------
 
 -- |
 -- TODO: Anchors (eg. C, N, S, E W and combinations thereof, perhaps represented as relative Vectors)
--- TODO: How to deal with centreOf when the components of v is integral (?)
-data BoundingBox v = BoundingBox { centreOf :: v, sizeOf :: v } deriving (Show, Eq)
+data BoundingBox v = BoundingBox { cornerOf :: v, sizeOf :: v } deriving (Show, Eq)
 
 
 -- |
@@ -71,8 +69,8 @@ data Line v = Line v v deriving (Show, Eq)
 -- TODO: Figure out how to deal with parameter (fromScalar requires a Num constraint on f, maybe use 'subclass')
 class Vector v where
   fromScalar :: Num f => f -> v f
-  vfold :: Num f => (f' -> f  -> f')  -> f'  -> v f  -> f'     -- TODO: What's with the Num constraint (not sure what I was thinking)
-  vzip  :: Num f => (f  -> f' -> f'') -> v f -> v f' -> v f''  -- TODO: What's with the Num constraint (not sure what I was thinking)
+  vfold :: (f' -> f  -> f')  -> f'  -> v f  -> f'
+  vzip  :: (f  -> f' -> f'') -> v f -> v f' -> v f''
 
 
 class HasX a f | a -> f where { x :: Lens a a f f }

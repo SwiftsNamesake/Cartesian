@@ -82,12 +82,10 @@ fromCorners a b = BoundingBox { cornerOf = min <$> a <*> b,
 -- TODO: 
 intersect :: (Applicative v, Ord f) => BoundingBox (v f) -> BoundingBox (v f) -> Maybe (BoundingBox (v f))
 intersect a b = do
-  overlaps <- uncurry overlap <$> (liftA2 (,) <*> (a^.axes) <*> (b^.axes))
---   (left', right')  <- overlap (a^.left, a^.right)  (b^.left, b^.right)
---   (top',  bottom') <- overlap (a^.top,  a^.bottom) (b^.top,  b^.bottom)
---   return $ fromSides top' left' bottom' right'
+  overlaps <- uncurry overlap <$> (zipA (a^.extents) (b^.extents))
+  BoundingBox <$> newCorner <*> newSize
   where
-    axesOf box = zipA (box^.corner) (box^.size)
+    bounds (from, len) = (from, from+len) -- From (begin, length) to (begin, end)
     zipA       = liftA2 (,)
     unzipA v   = (fst <$> v, snd <$> v)
 

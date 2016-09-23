@@ -50,6 +50,14 @@ import Control.Lens (Simple, Lens)
 -- | A lens focusing on a single [vector-]component in a BoundingBox
 type BoxLens v f = Simple Lens (BoundingBox (v f)) f
 
+-- | An axis represented as (begin, length)
+type Axis a = (a, a)
+
+
+-- | A vector where each component represents a single axis (cf. 'Axis')
+type Axes v a = v (Axis a)
+
+
 -- Types -----------------------------------------------------------------------------------------------------------------------------------
 
 -- |

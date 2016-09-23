@@ -165,8 +165,8 @@ linearIntersect f g
   | slopeOf f == slopeOf g = Nothing
   | otherwise = let x = (β-b)/(a-α) in Just $ Vector2D x (a*x + b)
   where
-    [a, α] = map slopeOf     [f, g]
-    [b, β] = map interceptOf [f, g]
+    (a, α) = (slopeOf     f, slopeOf     g)
+    (b, β) = (interceptOf f, interceptOf g)
 
 
 -- |

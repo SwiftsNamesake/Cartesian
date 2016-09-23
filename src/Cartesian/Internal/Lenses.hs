@@ -128,39 +128,37 @@ axis which = lens get set
 -- zipped :: (Applicative f, Applicative v, Traversable v) => v a -> ((v a, v a) -> f b)
 
 
--- | A lens that - given a transform function 'as' - focuses on a single vector of axis pairs (begin, length)
+-- | A lens that - given a transform function 'as' and its inverse 'undo' - focuses on a single vector of axis pairs (begin, length)
 --   The transform allows us to customise the representation of each axis.
 -- TODO: Pass in a vector so that can actually do something useful...
 -- TODO: Can I do this without Traversable (?)
 -- TODO: Simplify the signature (with type synonyms)
--- type Traversal s t a b = forall f. Applicative f =>    ((a)    -> f (b))    -> s                 -> f (t)
+-- TODO: Maybe it'd be easier to simply compose 'f' argument with 'as' and 'undo'
+-- type Traversal s t a b = forall f. Applicative f       => ((a)    -> f (b))    -> s                 -> f (t)
 -- axes :: forall f v a b. (Applicative f, Applicative v) => ((a, a) -> f (b, b)) -> BoundingBox (v a) -> f (BoundingBox (v b))
 -- axes :: forall f v a b. (Applicative f, Applicative v) => (v (a, a) -> f (v (b, b))) -> BoundingBox (v a) -> f (BoundingBox (v b))
-axisWise :: forall f v a b. (Functor f, Applicative v) => (v (a, a) -> v (b, b)) -> (v (b, b) -> f (v (c, c))) -> BoundingBox (v a) -> f (BoundingBox (v c))
-axisWise as f box = BoundingBox <$> (fst <$> newVecs) <*> (snd <$> newVecs)
+-- type Lens s t a b = forall (f :: * -> *). Functor f => (a -> f b) -> s -> f t
+axes :: (Applicative v) => Lens (BoundingBox (v a)) (BoundingBox (v b)) (Axes v a) (Axes v b)
+axes f box = uncurry BoundingBox <$> newVecs
   where
     -- 
-    newAxes :: f (v (c, c))
-    newAxes  = (f . as) $ zipA (box^.corner) (box^.size)
+    -- newAxes :: Functor f => f (v (c, c))
+    newAxes  = f $ zipA (box^.corner) (box^.size)
     
     -- We then 'unzip' the vector of pairs to obtain a pair of vectors
-    newVecs :: f (v c, v c)
+    -- newVecs :: Functor f => (v c, v c)
     newVecs = unzipA <$> newAxes
 
     zipA     = liftA2 (,)
     unzipA v = (fst <$> v, snd <$> v)
 
 
--- |
-axes :: forall f v a b. (Functor f, Applicative v) => (v (b, b) -> f (v (c, c))) -> BoundingBox (v a) -> f (BoundingBox (v c))
-axes = axisWise id
-
-
 -- | 
-extents :: forall f v a b. (Functor f, Applicative v) => (v (a, a) -> f (v (b, b))) -> BoundingBox (v a) -> f (BoundingBox (v b))
-extents f box = axisWise bounds
+extents :: (Applicative v, Num a, Num b) => Lens (BoundingBox (v a)) (BoundingBox (v b)) (Axes v a) (Axes v b)
+extents f = axes (fmap (fmap unbounds) . f . fmap bounds)
   where
-    bounds (from, len) = (from, from+len) -- From (begin, length) to (begin, end)
+    bounds   (from, len) = (from, from+len) -- From (begin, length) to (begin, end)
+    unbounds (from, to)  = (from, to-from) -- From (begin, length) to (begin, end)
 
 
 

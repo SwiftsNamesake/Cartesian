@@ -85,7 +85,6 @@ intersect a b = do
   overlaps <- uncurry overlap <$> (zipA (a^.extents) (b^.extents))
   BoundingBox <$> newCorner <*> newSize
   where
-    bounds (from, len) = (from, from+len) -- From (begin, length) to (begin, end)
     zipA       = liftA2 (,)
     unzipA v   = (fst <$> v, snd <$> v)
 

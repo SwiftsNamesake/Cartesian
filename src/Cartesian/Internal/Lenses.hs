@@ -41,7 +41,6 @@ module Cartesian.Internal.Lenses where
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
-import Control.Applicative (liftA2)
 import Control.Lens (makeLensesWith, lensRules, lensField, lens,
                      Simple, Lens,
                      (^.), (.~), (&),
@@ -71,14 +70,6 @@ import Cartesian.Internal.Utils
 
 -- | Ugh...
 makeLensesWith (lensRules & lensField .~ (\_ _ name -> [TopName (mkName $ dropSuffix "Of" (nameBase name))])) (''BoundingBox) -- TODO: 'Of'
-
--- Some helpers that should probably be factored out ---------------------------------------------------------------------------------------
-
-zipA :: (Applicative f) => f a -> f b -> f (a, b)
-zipA = liftA2 (,)
-
-unzipA :: (Applicative f) => f (a, b) -> (f a, f b)
-unzipA v = (fst <$> v, snd <$> v)
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -154,7 +145,7 @@ extents f = axes (fmap (fmap unbounds) . f . fmap bounds)
 -- TODO: Loosen constraint on n (✓)
 -- axes which.pinned (V1 step).x._1 -- lens get set
 side :: (Applicative v, Num n) => Simple Lens (Axes v n) (Axis n) -> Simple Lens (Axis n) n -> Simple BoxLens v n
-side axis' end = extents.axis'.end
+side axis' endpoint' = extents.axis'.endpoint'
 
 -- TODO: sides, vertices
 

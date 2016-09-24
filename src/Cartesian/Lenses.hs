@@ -1,6 +1,6 @@
 -- |
--- Module      : Cartesian.Space.Lenses
--- Description :
+-- Module      : Cartesian.Lenses
+-- Description : Exports public lenses
 -- Copyright   : (c) Jonatan H Sundqvist, 2015
 -- License     : MIT
 -- Maintainer  : Jonatan H Sundqvist
@@ -8,10 +8,10 @@
 -- Portability : POSIX (not sure)
 --
 
--- Created October 31 2015
+-- Created September 24 2016
 
--- TODO | -
---        -
+-- TODO | - 
+--        - 
 
 -- SPEC | -
 --        -
@@ -24,27 +24,20 @@
 
 
 
-
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- API
 --------------------------------------------------------------------------------------------------------------------------------------------
-module Cartesian.Space.Lenses (HasX(..), HasY(..), HasZ(..),
-                               left, right,
-                               bottom, top,
-                               front, back,
-                               width, height, depth) where
+module Cartesian.Lenses (
+  pinnedAxis, pinned,
+  axis, axes, extents, side,
+  begin, end,
+  width, height, depth, 
+  left, right, bottom, top, front, back,
+  centre) where
 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
-import Cartesian.Internal.Types
-import Cartesian.Space.Types
 import Cartesian.Internal.Lenses
-
-
-
---------------------------------------------------------------------------------------------------------------------------------------------
--- Lenses
---------------------------------------------------------------------------------------------------------------------------------------------

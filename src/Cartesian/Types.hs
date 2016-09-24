@@ -28,20 +28,32 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- API
 --------------------------------------------------------------------------------------------------------------------------------------------
-module Cartesian.Types (module Cartesian.Plane.Types,
-                        module Cartesian.Space.Types,
-                        BoundingBox(..)) where
+module Cartesian.Types (
+  -- ^ Third party types
+  V1(..), V2(..), V3(..), V4(..), Complex(..),
+  
+  -- ^ Synonyms
+  BoxLens, Axis, Axes, Polygon,
+
+  -- ^ Coordinate types
+  Normalised, Absolute,
+
+  -- ^ Types defined in this library
+  BoundingBox(..), Line, Linear,
+
+  -- ^ Classes
+  HasX, HasY, HasZ) where
 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
-import Cartesian.Plane.Types
-import Cartesian.Space.Types
+import Linear.V1
+import Linear.V2
+import Linear.V3
+import Linear.V4
 
+import Data.Complex (Complex(..))
 
-
---------------------------------------------------------------------------------------------------------------------------------------------
--- Functions
---------------------------------------------------------------------------------------------------------------------------------------------
+import Cartesian.Internal.Types

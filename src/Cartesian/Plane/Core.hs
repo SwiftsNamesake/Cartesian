@@ -1,5 +1,5 @@
 -- |
--- Module      : Cartesian.Plane
+-- Module      : Cartesian.Plane.Core
 -- Description :
 -- Copyright   : (c) Jonatan H Sundqvist, year
 -- License     : MIT
@@ -12,6 +12,7 @@
 
 -- TODO | - Which constraints are appropriate (Num is probably too generic, should be Real, maybe RealFrac)
 --        - Strictness, performance
+--        - Rename (?)
 
 -- SPEC | -
 --        -
@@ -21,9 +22,7 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- API
 --------------------------------------------------------------------------------------------------------------------------------------------
-module Cartesian.Plane (module Cartesian.Plane,
-                        module Cartesian.Plane.Types,
-                        magnitude, dotmap) where
+module Cartesian.Plane.Core where
 
 
 
@@ -38,17 +37,10 @@ module Cartesian.Plane (module Cartesian.Plane,
 import           Control.Applicative
 
 import           Control.Lens ((^.))
--- import qualified Control.Lens as L
-
--- import Southpaw.Utilities.Utilities (pairwise)
 
 import Cartesian.Internal.Types
--- import Cartesian.Internal.Instances
 import Cartesian.Internal.Lenses (begin, end)
 import Cartesian.Internal.Core
-
-import Cartesian.Space.Types
-import Cartesian.Plane.Types
 
 
 
@@ -62,10 +54,10 @@ import Cartesian.Plane.Types
 --
 -- TODO: Use epsilon (?)
 -- TODO: How to treat points that lie on an edge
-inside :: Num n => Polygon n -> Vector2D n -> Bool
-inside polygon (Vector2D px py) = error "Cartesian.Plane.inside is still a work in progress"
-  where
-    edges = polygon ++ [head polygon] -- Close the loop
+-- inside :: Num n => Polygon n -> Vector2D n -> Bool
+-- inside polygon (Vector2D px py) = error "Cartesian.Plane.inside is still a work in progress"
+--   where
+--     edges = polygon ++ [head polygon] -- Close the loop
     -- between (Line (Vector ax ay) (Vector bx by)) = _
 
 
@@ -74,21 +66,23 @@ inside polygon (Vector2D px py) = error "Cartesian.Plane.inside is still a work 
   -- _
 
 
--- |
-to3D :: Num f => Vector2D f -> Vector3D f
-to3D (Vector2D x' y') = Vector3D x' y' 0
-
+-- TODO: Use type families for this stuff (?)
 
 -- |
-from3D :: Num f => Vector3D f -> Vector2D f
-from3D (Vector3D x' y' _) = Vector2D x' y'
+-- to3D :: Num f => Vector2D f -> Vector3D f
+-- to3D (Vector2D x' y') = Vector3D x' y' 0
 
 
--- | Perform some unary operation on a 2D vector as a 3D vector, converting the result back to 2D by discarding the z component.
--- TODO: Rename (?)
--- TODO: Loosen Num restriction (eg. to anything with a 'zero' value) (?)
-in3D :: (Num f, Num f') => (Vector3D f -> Vector3D f') -> Vector2D f -> Vector2D f'
-in3D f = from3D . f . to3D
+-- -- |
+-- from3D :: Num f => Vector3D f -> Vector2D f
+-- from3D (Vector3D x' y' _) = Vector2D x' y'
+
+
+-- -- | Perform some unary operation on a 2D vector as a 3D vector, converting the result back to 2D by discarding the z component.
+-- -- TODO: Rename (?)
+-- -- TODO: Loosen Num restriction (eg. to anything with a 'zero' value) (?)
+-- in3D :: (Num f, Num f') => (Vector3D f -> Vector3D f') -> Vector2D f -> Vector2D f'
+-- in3D f = from3D . f . to3D
 
 
 -- | Same as in3D, but for binary operations.
@@ -137,7 +131,7 @@ intersect f' g' = do
   where
     -- indomain :: RealFloat f => Line (Vector2D f) -> Vector2D f -> Maybe (Vector2D f)
     indomain h' = restrict (h'^.begin) (h'^.end) -- TODO: Rename
-
+    
     -- mp :: Maybe (Vector2D f)
     mp = case (linear f', linear g') of
       (Just f, Nothing) -> let x' = g'^.begin.x in Just . Vector2D x' $ plotpoint f x'
@@ -188,22 +182,16 @@ intercept line = do
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
--- |
--- TODO: Type for distinguishing inclusive and exclusive values
-between :: Ord a => a -> a -> a -> Bool
-between mini maxi a = mini <= a && a <= maxi
-
-
 -- | Ensures that a given point lies within the domain and codomain
 -- TODO: Make polymorphic
 -- TODO: Let this function work on scalars, write another function for domain and codomain (?)
 -- restrict domain codomain p = _
-restrict :: (Num f, Ord f) => Vector2D f -> Vector2D f -> Vector2D f -> Maybe (Vector2D f)
-restrict a b p@(Vector2D x' y')
-  | indomain && incodomain = Just p
-  | otherwise              = Nothing
-  where
-    (Vector2D lowx lowy)   = dotwise min a b
-    (Vector2D highx highy) = dotwise max a b
-    indomain   = between lowx highx x'
-    incodomain = between lowy highy y'
+-- restrict :: (Applicative v, Traversable v, Num n, Ord n) => v n -> v n -> v n -> Maybe (v n)
+-- restrict a b p@(Vector2D x' y')
+--   | indomain && incodomain = Just p
+--   | otherwise              = Nothing
+--   where
+--     (Vector2D lowx lowy)   = dotwise min a b
+--     (Vector2D highx highy) = dotwise max a b
+--     indomain   = between lowx highx x'
+--     incodomain = between lowy highy y'

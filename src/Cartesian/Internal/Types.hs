@@ -37,7 +37,7 @@ module Cartesian.Internal.Types where
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
-import Control.Lens (Simple, Lens)
+import Control.Lens (Lens)
 
 
 
@@ -47,8 +47,11 @@ import Control.Lens (Simple, Lens)
 
 -- Synonyms --------------------------------------------------------------------------------------------------------------------------------
 
+-- TODO: Add some aliased lenses for these aliased types (?)
+
 -- | A lens focusing on a single [vector-]component in a BoundingBox
-type BoxLens v f = Simple Lens (BoundingBox (v f)) f
+type BoxLens v v' f f' = Lens (BoundingBox (v f)) (BoundingBox (v' f')) f f'
+
 
 -- | An axis represented as (begin, length)
 type Axis a = (a, a)
@@ -58,10 +61,15 @@ type Axis a = (a, a)
 type Axes v a = v (Axis a)
 
 
+-- | Coordinate system wrappers
+newtype Normalised v = Normalised { absolute   :: v } -- 
+newtype Absolute   v = Absoloute  { normalised :: v } -- 
+
 -- Types -----------------------------------------------------------------------------------------------------------------------------------
 
 -- |
 -- TODO: Anchors (eg. C, N, S, E W and combinations thereof, perhaps represented as relative Vectors)
+-- TODO: Define some standard instances (eg. Functor, Applicative)
 data BoundingBox v = BoundingBox { cornerOf :: v, sizeOf :: v } deriving (Show, Eq)
 
 

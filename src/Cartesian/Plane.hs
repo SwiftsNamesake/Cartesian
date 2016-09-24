@@ -154,7 +154,7 @@ linear line = Linear <$> intercept line <*> slope line
 -- | Applies a linear function to the given value
 -- TODO: Rename (?)
 plotpoint :: RealFloat f => Linear f -> f -> f
-plotpoint f x = slopeOf f*x + interceptOf f
+plotpoint f x' = slopeOf f*x' + interceptOf f
 
 
 -- | Finds the intersection (if any) of two linear functions
@@ -163,7 +163,7 @@ plotpoint f x = slopeOf f*x + interceptOf f
 linearIntersect :: RealFloat f => Linear f -> Linear f -> Maybe (Vector2D f)
 linearIntersect f g
   | slopeOf f == slopeOf g = Nothing
-  | otherwise = let x = (β-b)/(a-α) in Just $ Vector2D x (a*x + b)
+  | otherwise = let x' = (β-b)/(a-α) in Just $ Vector2D x' (a*x' + b)
   where
     (a, α) = (slopeOf     f, slopeOf     g)
     (b, β) = (interceptOf f, interceptOf g)
@@ -195,14 +195,15 @@ between mini maxi a = mini <= a && a <= maxi
 
 
 -- | Ensures that a given point lies within the domain and codomain
+-- TODO: Make polymorphic
 -- TODO: Let this function work on scalars, write another function for domain and codomain (?)
 -- restrict domain codomain p = _
 restrict :: (Num f, Ord f) => Vector2D f -> Vector2D f -> Vector2D f -> Maybe (Vector2D f)
-restrict a b p@(Vector2D x y)
+restrict a b p@(Vector2D x' y')
   | indomain && incodomain = Just p
   | otherwise              = Nothing
   where
     (Vector2D lowx lowy)   = dotwise min a b
     (Vector2D highx highy) = dotwise max a b
-    indomain   = between lowx highx x
-    incodomain = between lowy highy y
+    indomain   = between lowx highx x'
+    incodomain = between lowy highy y'

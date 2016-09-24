@@ -37,10 +37,11 @@ module Cartesian.Internal.Core (module Cartesian.Internal.Core,
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
 import Data.List    (sort)
-import Control.Lens ((%~))
+import Control.Lens ((^.))
+import Control.Applicative
 
 import Cartesian.Internal.Types
--- import Cartesian.Internal.Lenses
+import Cartesian.Internal.Lenses
 
 
 
@@ -56,7 +57,8 @@ overlap :: (Ord n) => (n, n) -> (n, n) -> Maybe (n, n)
 overlap (a, b) (c, d)
   | min (a, b) (c, d) /= (a', b') = Just (b', c')
   | otherwise                     = Nothing
-  where [a', b', c', d'] = sort [a, b, c, d]
+  where
+    [a', b', c', d'] = sort [a, b, c, d]
 
 -- Vectors ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -111,3 +113,34 @@ mag = magnitude
 -- 	| otherwise                                  = Nothing --
 -- 	where [α, β, γ, _] = sort [fst a, snd a, fst b, snd b] -- That's right.
 -- 	      leftmost     = minimumBy (comparing fst) [a, b]  --
+
+-- Convenience constructors ----------------------------------------------------------------------------------------------------------------
+
+-- TODO: Generalise constructors, move to Internal.Core (✓)
+
+-- | Creates a bounding box from two opposite corners
+-- TODO: Better name (?)
+-- TODO: Don't make assumptions about WHICH corners they are (✓)
+-- TODO: Should we care about degenerate cases (such as 'a' and 'b' being identical)
+fromCorners :: (Applicative v, Num n, Ord n) => v n -> v n -> BoundingBox (v n)
+fromCorners a b = BoundingBox { cornerOf = min <$> a <*> b,
+                                sizeOf   = abs <$> liftA2 (-) b a }
+
+
+-- | 
+fromAxes :: (Applicative v) => Axes v n -> BoundingBox (v n)
+fromAxes axes' = let (begin', size') = unzipA axes' in BoundingBox { cornerOf = begin', sizeOf = size' }
+
+
+-- | Top Left Bottom Right
+fromExtents :: (Applicative v, Num n) => Axes v n -> BoundingBox (v n)
+fromExtents extents' = let (begin', end') = unzipA extents' in BoundingBox { cornerOf = begin', sizeOf = liftA2 (-) end' begin' }
+
+-- Booleans --------------------------------------------------------------------------------------------------------------------------------
+
+-- | Finds the intersection (boolean AND) of two bounding boxes
+intersect :: (Applicative v, Traversable v, Ord n, Num n) => BoundingBox (v n) -> BoundingBox (v n) -> Maybe (BoundingBox (v n))
+intersect a b = do
+  overlaps' <- traverse (uncurry overlap) (zipA (a^.extents) (b^.extents))
+  return $ fromExtents overlaps'
+

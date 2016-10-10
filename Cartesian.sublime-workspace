@@ -5,7 +5,7 @@
 		[
 			[
 				"mini",
-				"minimumBy	(a -> a -> Ordering) -> [a] -> a"
+				"minimumBy\t(a -> a -> Ordering) -> [a] -> a"
 			],
 			[
 				"bin",
@@ -65,7 +65,7 @@
 			],
 			[
 				"def",
-				"def	Function"
+				"def\tFunction"
 			],
 			[
 				"lo",
@@ -121,7 +121,7 @@
 			],
 			[
 				"m",
-				"main	method (main)"
+				"main\tmethod (main)"
 			],
 			[
 				"bor",
@@ -169,7 +169,7 @@
 			],
 			[
 				"co",
-				"cos	constant string"
+				"cos\tconstant string"
 			],
 			[
 				"set",
@@ -361,7 +361,7 @@
 			],
 			[
 				"try",
-				"try	Try/Except"
+				"try\tTry/Except"
 			],
 			[
 				"key",
@@ -373,7 +373,7 @@
 			],
 			[
 				"ele",
-				"elementAt	[a] -> Int -> a"
+				"elementAt\t[a] -> Int -> a"
 			],
 			[
 				"cbo",
@@ -409,11 +409,11 @@
 			],
 			[
 				"f",
-				"forv	Vector For Loop"
+				"forv\tVector For Loop"
 			],
 			[
 				"ma",
-				"main	main()"
+				"main\tmain()"
 			],
 			[
 				"pyra",
@@ -429,7 +429,7 @@
 			],
 			[
 				"if",
-				"ifmain	if __name__ == '__main__'"
+				"ifmain\tif __name__ == '__main__'"
 			],
 			[
 				"sha",
@@ -519,30 +519,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "Cartesian.hs",
-			"settings":
-			{
-				"buffer_size": 4256,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/Jonatan/Desktop/Haskell/modules/Utilities/Format.hs",
-			"settings":
-			{
-				"buffer_size": 1432,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/Jonatan/Desktop/Haskell/modules/Utilities/Utilities.hs",
-			"settings":
-			{
-				"buffer_size": 2350,
-				"line_ending": "Windows"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -776,7 +752,7 @@
 				"Set Syntax: Regular Expression"
 			],
 			[
-				"im	",
+				"im\t",
 				"Set Syntax: PythonImproved"
 			],
 			[
@@ -1121,6 +1097,9 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Jonatan/Desktop/Haskell/modules/Utilities/Utilities.hs",
+		"/C/Users/Jonatan/Desktop/Haskell/modules/Utilities/Format.hs",
+		"/C/Users/Jonatan/Desktop/Haskell/modules/Cartesian/Cartesian.hs",
 		"/C/Users/Jonatan/Desktop/Haskell/modules/Cartesian/.gitignore",
 		"/C/Users/Jonatan/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Users/Jonatan/Desktop/Java/QMUL/Jon/2015/Files (7)/AssignmentSeven.hs",
@@ -1245,10 +1224,7 @@
 		"/C/Users/Jonatan/AppData/Roaming/Sublime Text 3/Packages/Git/Git.sublime-settings",
 		"/C/Users/Jonatan/Desktop/Python/regextest.py",
 		"/C/Users/Jonatan/Desktop/Python/projects/SpecialSymbols/InsertSpecialSymbol.py",
-		"/C/Users/Jonatan/Desktop/Python/projects/Hangman/data/dicts/README.md",
-		"/C/Users/Jonatan/Desktop/Python/projects/Hangman/data/settings/README.md",
-		"/C/Users/Jonatan/Desktop/Python/projects/Newtonian/ed4a00de-9aba-4429-a228-78821bf9e32a.dmp",
-		"/C/Users/Jonatan/Desktop/Python/projects/Newtonian/.git/config"
+		"/C/Users/Jonatan/Desktop/Python/projects/Hangman/data/dicts/README.md"
 	],
 	"find":
 	{
@@ -1384,7 +1360,7 @@
 			"attribute",
 			"({",
 			"dispatcher.bind",
-			" 	",
+			" \t",
 			"lambda",
 			",",
 			"Rect(",
@@ -1432,96 +1408,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "Cartesian.hs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4256,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3519,
-								3519
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/SublimeHaskell/Syntaxes/Haskell-SublimeHaskell.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1560.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "/C/Users/Jonatan/Desktop/Haskell/modules/Utilities/Format.hs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1432,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								28,
-								28
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/SublimeHaskell/Syntaxes/Haskell-SublimeHaskell.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/C/Users/Jonatan/Desktop/Haskell/modules/Utilities/Utilities.hs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2350,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1434,
-								1434
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/SublimeHaskell/Syntaxes/Haskell-SublimeHaskell.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				}
 			]
 		}
 	],

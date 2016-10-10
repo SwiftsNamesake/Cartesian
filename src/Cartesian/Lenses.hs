@@ -30,14 +30,18 @@
 module Cartesian.Lenses (
   pinnedAxis, pinned,
   axis, axes, extents, side,
+  corner, size,
   begin, end,
-  width, height, depth, 
+  width, height, depth,
   left, right, bottom, top, front, back,
-  centre) where
+  centre,
+  x, y, z
+) where
 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
+import Cartesian.Internal.Types
 import Cartesian.Internal.Lenses

@@ -14,5 +14,5 @@ import Linear.V4
 import Cartesian.Internal.Lenses
 
 
-:set prompt "> "
-:set prompt2 ">| "
+:set prompt  "> "
+:set prompt2 "| "

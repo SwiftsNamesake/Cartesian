@@ -204,5 +204,7 @@ back = side z _2
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
+-- |
+-- TODO: This should probably yield a vector (rename or redesign)
 centre :: (Applicative v, Fractional f) => Simple Lens (BoundingBox (v f)) (Axes v f)
 centre = pinned (pure $ 1/2)

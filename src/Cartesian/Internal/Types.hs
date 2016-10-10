@@ -119,6 +119,8 @@ class HasZ a f | a -> f where { z :: Simple Lens a f }
 -- Instances -----------------------------------------------------------------------------------------------------------------------------------------
 
 
+-- TODO: Generate these instances with TemplateHaskell (?)
+
 instance HasX (V1 f) f where
   x = lens (\(V1 x') -> x') (\_ x' -> V1 x')
 

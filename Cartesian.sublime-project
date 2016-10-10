@@ -1,5 +1,19 @@
 {
-	"settings": {
-		
+	"binary_exclude_patterns":
+	[
+		".stack-work"
+	],
+	"folder_exclude_patterns":
+	[
+		"*stack-work/*"
+	],
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+	"settings":
+	{
 	}
 }

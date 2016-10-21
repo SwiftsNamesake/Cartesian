@@ -519,6 +519,33 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "src/Cartesian/Internal/Lenses.hs",
+			"settings":
+			{
+				"buffer_size": 7745,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/Cartesian/Core.hs",
+			"settings":
+			{
+				"buffer_size": 1621,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/Cartesian/Internal/Core.hs",
+			"settings":
+			{
+				"buffer_size": 5331,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -527,10 +554,26 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 392.0,
-		"last_filter": "close",
+		"height": 288.0,
+		"last_filter": "refre",
 		"selected_items":
 		[
+			[
+				"refre",
+				"Project: Refresh Folders"
+			],
+			[
+				"preferences",
+				"Preferences: SublimeHaskell Settings – User"
+			],
+			[
+				"refresh",
+				"Project: Refresh Folders"
+			],
+			[
+				"add fo",
+				"Project: Add Folder"
+			],
 			[
 				"close",
 				"Project: Close"
@@ -1026,25 +1069,9 @@
 			[
 				"sublimeli",
 				"SublimeLinter: Next Error"
-			],
-			[
-				"projec",
-				"Project: Save As"
-			],
-			[
-				"menu",
-				"View: Toggle Menu"
-			],
-			[
-				"inden",
-				"Indentation: Reindent Lines"
-			],
-			[
-				"sublime",
-				"SublimeLinter: Next Error"
 			]
 		],
-		"width": 464.0
+		"width": 432.0
 	},
 	"console":
 	{
@@ -1095,8 +1122,16 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/C/Users/Jonatan/Desktop/Haskell/modules/Cartesian"
+	],
 	"file_history":
 	[
+		"/C/Users/Jonatan/AppData/Roaming/Sublime Text 3/Packages/SublimeHaskell/Settings/SublimeHaskell.sublime-settings",
+		"/C/Users/Jonatan/AppData/Roaming/Sublime Text 3/Packages/User/SublimeHaskell.sublime-settings",
+		"/C/Users/Jonatan/Desktop/Haskell/modules/Cartesian/src/Cartesian/Lenses.hs",
+		"/C/Users/Jonatan/Desktop/Haskell/modules/Cartesian/Cartesian.sublime-project",
 		"/C/Users/Jonatan/Desktop/Haskell/modules/Utilities/Utilities.hs",
 		"/C/Users/Jonatan/Desktop/Haskell/modules/Utilities/Format.hs",
 		"/C/Users/Jonatan/Desktop/Haskell/modules/Cartesian/Cartesian.hs",
@@ -1220,15 +1255,11 @@
 		"/C/Users/Jonatan/Desktop/Python/projects/Pong.py",
 		"/C/Users/Jonatan/Desktop/Python/projects/Hangman/data/dicts/sv_fysik.txt",
 		"/C/Users/Jonatan/Desktop/Python/projects/Hangman/data/dicts/en_grandiloquent.txt",
-		"/C/Users/Jonatan/Desktop/Python/projects/Newtonian/test.py",
-		"/C/Users/Jonatan/AppData/Roaming/Sublime Text 3/Packages/Git/Git.sublime-settings",
-		"/C/Users/Jonatan/Desktop/Python/regextest.py",
-		"/C/Users/Jonatan/Desktop/Python/projects/SpecialSymbols/InsertSpecialSymbol.py",
-		"/C/Users/Jonatan/Desktop/Python/projects/Hangman/data/dicts/README.md"
+		"/C/Users/Jonatan/Desktop/Python/projects/Newtonian/test.py"
 	],
 	"find":
 	{
-		"height": 31.0
+		"height": 38.0
 	},
 	"find_in_files":
 	{
@@ -1243,6 +1274,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"true",
+			"as",
 			"beta",
 			"x",
 			"intercept",
@@ -1368,9 +1401,7 @@
 			"hombre",
 			"g ",
 			"kind=",
-			"%s",
-			"print",
-			"g Mes"
+			"%s"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1408,8 +1439,95 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "src/Cartesian/Internal/Lenses.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7745,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4471,
+								4471
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/SublimeHaskell/Syntaxes/Haskell-SublimeHaskell.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1513.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/Cartesian/Core.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1621,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								941,
+								941
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/SublimeHaskell/Syntaxes/Haskell-SublimeHaskell.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 528.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/Cartesian/Internal/Core.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5331,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1859,
+								1859
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/SublimeHaskell/Syntaxes/Haskell-SublimeHaskell.tmLanguage"
+						},
+						"translation.x": -0.0,
+						"translation.y": 990.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -1464,6 +1582,10 @@
 	{
 		"height": 130.0
 	},
+	"output.sublime_haskell_output_panel":
+	{
+		"height": 142.0
+	},
 	"pinned_build_system": "",
 	"project": "Cartesian.sublime-project",
 	"replace":
@@ -1477,6 +1599,18 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"core",
+				"src\\Cartesian\\Core.hs"
+			],
+			[
+				"internal/len",
+				"src\\Cartesian\\Internal\\Lenses.hs"
+			],
+			[
+				"lenses",
+				"src\\Cartesian\\Lenses.hs"
+			],
 			[
 				"ut",
 				"utilities.py"
@@ -1574,7 +1708,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": false,
-	"side_bar_width": 166.0,
+	"side_bar_width": 232.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
